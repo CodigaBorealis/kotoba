@@ -15,6 +15,9 @@ find_package(raylib 5.0 REQUIRED)
 
 
 add_executable(Kotoba
+    src/Window.cpp
+    src/Resources.cpp
+    src/Utils.cpp
     main.cpp
 )
 

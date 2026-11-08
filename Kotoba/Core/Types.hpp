@@ -23,4 +23,12 @@ namespace Kotoba{
     using usize = std::size_t;
     using isize = std::ptrdiff_t;
 
+    //RGBA Color type
+    struct Color{
+
+        u8 r{0};
+        u8 g{0};
+        u8 b{0};
+        u8 a{0};
+    };
 }

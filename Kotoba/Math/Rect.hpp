@@ -1,6 +1,6 @@
 #pragma once
-#include <raylib.h>
-#include "../Core/Concepts.hpp"
+#include "Kotoba/Core/Concepts.hpp"
+#include "Kotoba/Core/Raylib.hpp"
 
 namespace Kotoba{
 

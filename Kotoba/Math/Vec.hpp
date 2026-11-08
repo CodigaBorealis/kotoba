@@ -1,9 +1,8 @@
 #pragma once
 #include <algorithm>
 #include <cmath>
-#include <raylib.h>
-#include "../Core/Concepts.hpp"
-#include <cstdint>
+#include "Kotoba/Core/Concepts.hpp"
+#include "Kotoba/Core/Raylib.hpp"
 
 namespace Kotoba{
 
