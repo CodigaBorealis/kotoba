@@ -18,6 +18,8 @@ add_executable(Kotoba
     src/Window.cpp
     src/Resources.cpp
     src/Utils.cpp
+    src/Input.cpp
+    
     main.cpp
 )
 
