@@ -1,4 +1,5 @@
 #pragma once
+#include <chrono>
 #include <cstdint>
 
 namespace Kotoba{
@@ -26,9 +27,11 @@ namespace Kotoba{
     //RGBA Color type
     struct Color{
 
-        u8 r{0};
-        u8 g{0};
-        u8 b{0};
-        u8 a{0};
+        u8 r{255};
+        u8 g{255};
+        u8 b{255};
+        u8 a{255};
     };
+    //Time
+    using Duration = std::chrono::duration<float>;
 }
