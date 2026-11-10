@@ -58,4 +58,9 @@ namespace Kotoba{
     template<typename T>
     concept Numerical = SignedType<T> || UnsignedType<T> || FloatType<T>;
 
+
+    template<typename T>
+
+    concept ComponentType = std::is_object_v<T> && std::same_as<T, std::remove_cvref_t<T>> && !std::is_abstract_v<T> && std::is_destructible_v<T>;
+
 }
