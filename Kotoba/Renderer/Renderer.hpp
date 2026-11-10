@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include <raylib.h>
 #include "Types.hpp"
 
 namespace Kotoba{
@@ -40,7 +39,7 @@ namespace Kotoba{
         void queue(Rectangle rectangle);
         void queue(Ellipse ellipse);
         void queue(Polygon polygon);
-        void queue(Tex texture);
+        void queue(Texture texture);
         void queue(Txt text);
         void draw();
         void endFrame();

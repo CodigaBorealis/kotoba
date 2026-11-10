@@ -4,7 +4,6 @@
 #include "Kotoba/Core/Resources.hpp"
 #include "Kotoba/Core/Exception.hpp"
 #include "Kotoba/Core/Types.hpp"
-#include <raylib.h>
 
 namespace Kotoba{
 

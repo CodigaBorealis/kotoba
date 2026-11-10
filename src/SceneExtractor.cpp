@@ -1,4 +1,5 @@
 #include "Kotoba/Renderer/SceneExtractor.hpp"
+#include "Kotoba/Components/GraphicalComponents.hpp"
 #include "Kotoba/Renderer/Types.hpp"
 #include "Kotoba/Scene/Scene.hpp"
 #include <vector>
@@ -52,9 +53,7 @@ namespace Kotoba{
         
     }
 
-    std::vector<DrawCommand> SceneExtractor::collectCommands(Scene& scene){
-
-        std::vector<DrawCommand> result{};
+    const std::vector<DrawCommand>& SceneExtractor::collectCommands(Scene& scene){
 
         const auto& entities = scene.getEntities();
 
@@ -66,7 +65,7 @@ namespace Kotoba{
 
             Scene::Entity entity{x, slot.generation};
 
-            //auto* transform = scene.get<TextureComponent>(entity);
+            //auto* transform = scene.get<TransformComponent>(entity);
             //auto* mesh = scene.get<TransformComponent>(entity);
 
             //if (!transform || !mesh) continue;

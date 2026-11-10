@@ -6,7 +6,6 @@
 #include "Kotoba/Math/Vec.hpp"
 #include "Kotoba/Window/Window.hpp"
 #include "Kotoba/Core/Raylib.hpp"
-#include <raylib.h>
 
 namespace Kotoba{
 
@@ -103,17 +102,17 @@ namespace Kotoba{
 
     namespace{
 
-        void drawCommand(const Renderer::Point& cmd){
+        void drawCommand(const Point& cmd){
 
             ::DrawPixel(cmd.position.x, cmd.position.y, cmd.color);
         }
 
-        void drawCommand(const Renderer::Line& cmd){
+        void drawCommand(const Line& cmd){
 
             ::DrawLine(cmd.start.x, cmd.start.y, cmd.end.x, cmd.end.y, cmd.color);
         }
 
-        void drawCommand(const Renderer::Circle& cmd){
+        void drawCommand(const Circle& cmd){
 
             if(cmd.outlineOnly){
 
@@ -125,7 +124,7 @@ namespace Kotoba{
             }
         }
 
-        void drawCommand(const Renderer::Triangle& cmd){
+        void drawCommand(const Triangle& cmd){
 
             if(cmd.outlineOnly){
 
@@ -137,7 +136,7 @@ namespace Kotoba{
             }
         }
 
-        void drawCommand(const Renderer::Rectangle& cmd){
+        void drawCommand(const Rectangle& cmd){
 
             if(cmd.outlineOnly){
 
@@ -149,7 +148,7 @@ namespace Kotoba{
             }
         }
 
-        void drawCommand(const Renderer::Ellipse& cmd){
+        void drawCommand(const Ellipse& cmd){
 
             if(cmd.outlineOnly){
 
@@ -161,7 +160,7 @@ namespace Kotoba{
             }
         }
 
-        void drawCommand(const Renderer::Polygon& cmd){
+        void drawCommand(const Polygon& cmd){
 
             if(cmd.outlineOnly){
 
@@ -173,14 +172,14 @@ namespace Kotoba{
             }
         }
 
-        void drawCommand(const Renderer::Tex& cmd){
+        void drawCommand(const Tex& cmd){
 
             if(!cmd.texture) throw GraphicsException("Renderer expected a Texture pointer, got nullptr", ErrorCode::NullPointerException);
 
             ::DrawTextureEx(cmd.texture->native(), cmd.position, cmd.rotation, cmd.scale, cmd.tint);
         }
 
-        void drawCommand(const Renderer::Txt& cmd){
+        void drawCommand(const Txt& cmd){
 
             if(!cmd.font) throw GraphicsException("Renderer expected a Font pointer, got nullptr", ErrorCode::NullPointerException);
 
