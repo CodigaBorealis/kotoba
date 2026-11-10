@@ -4,7 +4,6 @@
 #include "Kotoba/Utils/Utils.hpp"
 #include "Kotoba/Core/Raylib.hpp"
 #include <filesystem>
-#include <raylib.h>
 
 namespace Kotoba{
 

@@ -11,10 +11,10 @@ namespace Kotoba{
 
         public:
 
-        std::vector<DrawCommand> collectCommands(Scene& scene);
-
-        private:
+        const std::vector<DrawCommand>& collectCommands(Scene& scene);
         
-        usize drawableCount{};
-    };
+        private:
+
+        std::vector<DrawCommand> commands{};
+    };      
 }
