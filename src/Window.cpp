@@ -284,6 +284,6 @@ namespace Kotoba{
         
         if(!IsWindowReady()) throw InitializationException("Window has not been initialized", ErrorCode::WindowNotInitialized);
  
-        return impl->requestedClose;
+        return impl->requestedClose || ::WindowShouldClose();
     }
 }

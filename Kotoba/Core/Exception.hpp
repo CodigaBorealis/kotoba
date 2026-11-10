@@ -74,5 +74,10 @@ namespace Kotoba{
         using Exception::Exception;
     };
 
+    class GraphicsException : public Exception{
 
+        public:
+
+        using Exception::Exception;
+    };
 }
