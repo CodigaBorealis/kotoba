@@ -2,7 +2,8 @@
 #include <algorithm>
 #include <cmath>
 #include "Kotoba/Core/Concepts.hpp"
-#include "Kotoba/Core/Raylib.hpp"
+
+struct Vector2;
 
 namespace Kotoba{
 
@@ -30,20 +31,13 @@ namespace Kotoba{
         *Constructs a Vec<float> from a raylib vector2
         */
 
-        constexpr Vec(Vector2 vec)
-            :
-            x(static_cast<T>(vec.x)),
-            y(static_cast<T>(vec.y))
-            {}
+        Vec(const Vector2& vec);
         /*
         *Converts the Vec into a raylib Vector2
         *Returns a Vector2 with both components converted to float
         */
 
-        constexpr operator ::Vector2() const{
-
-            return{static_cast<float>(x), static_cast<float>(y)};
-        }     
+        operator ::Vector2() const;        
 
         /*
         *@param other The Vec to add

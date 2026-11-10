@@ -21,7 +21,8 @@ add_executable(Kotoba
     src/Input.cpp
     src/Types.cpp
     src/Renderer.cpp
-    
+    src/Rect.cpp
+    src/Vec.cpp
     main.cpp
 )
 
