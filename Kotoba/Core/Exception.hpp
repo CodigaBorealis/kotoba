@@ -80,4 +80,11 @@ namespace Kotoba{
 
         using Exception::Exception;
     };
+
+    class SceneException : public Exception{
+
+        public:
+
+        using Exception::Exception;
+    };
 }

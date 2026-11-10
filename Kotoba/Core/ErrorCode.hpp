@@ -21,6 +21,12 @@ namespace Kotoba{
         // Initialization errors
         GraphicsInitializationFailed = 3000,
         AudioInitializationFailed,
+        //Scene
+        SceneEntityCreationFailed = 4000,
+        SceneInvalidEntity,
+        SceneComponentAlreadyExists,
+        SceneComponentCreationFailed,
+        //nullptr
         NullPointerException
         
 
