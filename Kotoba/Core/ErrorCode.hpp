@@ -20,7 +20,9 @@ namespace Kotoba{
         ResourceInvalidFormat,
         // Initialization errors
         GraphicsInitializationFailed = 3000,
-        AudioInitializationFailed
+        AudioInitializationFailed,
+        NullPointerException
+        
 
     };
 }

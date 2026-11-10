@@ -19,6 +19,8 @@ add_executable(Kotoba
     src/Resources.cpp
     src/Utils.cpp
     src/Input.cpp
+    src/Types.cpp
+    src/Renderer.cpp
     
     main.cpp
 )

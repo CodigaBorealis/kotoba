@@ -2,6 +2,8 @@
 #include <chrono>
 #include <cstdint>
 
+struct Color;
+
 namespace Kotoba{
 
     //Unsigned integer types
@@ -27,11 +29,22 @@ namespace Kotoba{
     //RGBA Color type
     struct Color{
 
+        constexpr Color() = default;
+
+        constexpr Color(u8 r, u8 g, u8 b, u8 a)
+            :
+            r(r),
+            g(g),
+            b(b),
+            a(a)
+            {}
+        operator ::Color() const;
         u8 r{255};
-        u8 g{255};
-        u8 b{255};
+        u8 g{0};
+        u8 b{0};
         u8 a{255};
     };
+
     //Time
     using Duration = std::chrono::duration<float>;
 }
