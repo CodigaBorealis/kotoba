@@ -6,14 +6,14 @@
 #include <filesystem>
 #include <memory>
 #include <string_view>
-#include <array>
 #include <algorithm>
+#include <string>
 
-class Image;
-class Texture;
-class Font;
-class Music;
-class Sound;
+struct Image;
+struct Texture;
+struct Font;
+struct Music;
+struct Sound;
 
 namespace Kotoba{
 

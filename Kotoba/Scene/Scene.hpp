@@ -44,6 +44,11 @@ namespace Kotoba{
 
             return slot.alive && slot.generation == entity.generation;
         }
+
+        const std::vector<EntitySlot>& getEntities() const{
+
+            return entities;
+        }   
         
         void clear(){
 
@@ -54,7 +59,7 @@ namespace Kotoba{
 
             freeEntities.clear();
 
-            for(std::size_t x = 0; x < entities.size(); x ++){
+            for(usize x = 0; x < entities.size(); x ++){
 
                 auto& slot = entities[x];
 
@@ -262,7 +267,7 @@ namespace Kotoba{
 
             return static_cast<ComponentStorage<T>&>(*it->second);
         }
-
+        
         std::vector<EntitySlot> entities{};
         std::vector<u32> freeEntities{};
         std::unordered_map<std::type_index, std::unique_ptr<IComponentStorage>> componentStorages{};
