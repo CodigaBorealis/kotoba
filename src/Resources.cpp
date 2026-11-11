@@ -327,4 +327,29 @@ namespace Kotoba{
         return impl->handle;
     }
 
+    bool Image::isValid() const noexcept{
+
+        return impl && impl->handle.data != nullptr;
+    }
+
+    bool Texture::isValid() const noexcept{
+
+        return impl && impl->handle.id != 0;
+    }
+
+    bool Font::isValid() const noexcept{
+
+        return impl && impl->handle.texture.id != 0;
+    }
+
+    bool Music::isValid() const noexcept{
+
+        return impl && impl->handle.ctxData != nullptr;
+    }
+
+    bool Sound::isValid() const noexcept{
+        
+        return impl && impl->handle.frameCount > 0;
+    }
+
 }

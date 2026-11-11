@@ -9,9 +9,9 @@
 #include "Kotoba/Core/Raylib.hpp"
 #include "Kotoba/Core/Resources.hpp"
 #include "Kotoba/Components/GraphicalComponents.hpp"
-
 #include <iterator>
 #include <iostream>
+
 namespace Kotoba{
 
     struct Renderer::Impl{
@@ -26,8 +26,8 @@ namespace Kotoba{
         ::RenderTexture2D canvas{};
         std::vector<DrawCommand> queuedCommands{};
         Color clearColor{0, 255, 0, 255};
-        Vec2f baseResolution{};
-        Vec2f renderTargetOffset{};
+        Vec2f baseResolution{1280, 720};
+        Vec2f renderTargetOffset{0, 0};
         f32 scale{1.0f};
 
     };

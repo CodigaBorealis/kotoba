@@ -6,7 +6,7 @@
 #include <variant>
 
 namespace Kotoba{
-
+ 
     /*
     *Represents a component that can be tinted by an rgba color
     */

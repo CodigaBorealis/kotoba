@@ -3,7 +3,6 @@
 #include "Kotoba/Core/Types.hpp"
 #include "Kotoba/Core/Exception.hpp"
 #include "Kotoba/Core/Concepts.hpp"
-#include <cstddef>
 #include <memory>
 #include <string>
 #include <typeindex>
@@ -152,7 +151,7 @@ namespace Kotoba{
         //The reference is only guaranteed to remain valid while the
         //component exists in its storage. Removing the component,
         //destroying its entity, or clearing the scene invalidates it.
-        
+
         T& emplace(Entity entity, Args&&... args){
 
             if(!valid(entity)) throw SceneException("Invalid entity", ErrorCode::SceneEntityCreationFailed);
