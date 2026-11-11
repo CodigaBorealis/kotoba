@@ -11,7 +11,7 @@ namespace Kotoba{
 
     struct AudioPlayer::Impl{
 
-        std::vector<Music*> activeMusicStreams{};
+        std::vector<std::shared_ptr<Music>> activeMusicStreams{};
         std::vector<AudioCommand> queuedCommands{};
     };
 
@@ -31,7 +31,7 @@ namespace Kotoba{
 
     namespace{
 
-        void play(const Music* music, const AudioCommand& command){
+        void play(std::shared_ptr<Music> music, const AudioCommand& command){
 
             if(!music) throw AudioException("Cannot play music resource", ErrorCode::NullPointerException);
 
@@ -40,7 +40,7 @@ namespace Kotoba{
             ::PlayMusicStream(music->native());
         }
         
-        void play(const Sound* sound, const AudioCommand& command){
+        void play(std::shared_ptr<Sound> sound, const AudioCommand& command){
 
             if(!sound) throw AudioException("Cannot play sound resource", ErrorCode::NullPointerException);
 
@@ -50,7 +50,7 @@ namespace Kotoba{
             
         }
 
-        void stop(const Music* music, const AudioCommand& command){
+        void stop(std::shared_ptr<Music> music, const AudioCommand& command){
 
             if(!music) throw AudioException("Cannot stop music resource", ErrorCode::NullPointerException);
 
@@ -59,7 +59,7 @@ namespace Kotoba{
             ::StopMusicStream(music->native());
         }
         
-        void stop(const Sound* sound, const AudioCommand& command){
+        void stop(std::shared_ptr<Sound> sound, const AudioCommand& command){
 
             if(!sound) throw AudioException("Cannot stop sound resource", ErrorCode::NullPointerException);
 
@@ -69,7 +69,7 @@ namespace Kotoba{
             
         }
 
-        void volume(const Music* music, const AudioCommand& command){
+        void volume(std::shared_ptr<Music> music, const AudioCommand& command){
 
             if(!music) throw AudioException("Cannot set the volume of a music resource", ErrorCode::NullPointerException);
 
@@ -78,7 +78,7 @@ namespace Kotoba{
             ::SetMusicVolume(music->native(), command.volume);  
         }
         
-        void volume(const Sound* sound, const AudioCommand& command){
+        void volume(std::shared_ptr<Sound> sound, const AudioCommand& command){
 
             if(!sound) throw AudioException("Cannot set the volume of a sound resource", ErrorCode::NullPointerException);
 
@@ -87,7 +87,7 @@ namespace Kotoba{
             ::SetSoundVolume(sound->native(), command.volume);          
         }
 
-        void pitch(const Music* music, const AudioCommand& command){
+        void pitch(std::shared_ptr<Music> music, const AudioCommand& command){
 
             if(!music) throw AudioException("Cannot set the pitch of a music resource", ErrorCode::NullPointerException);
 
@@ -96,7 +96,7 @@ namespace Kotoba{
             ::SetMusicPitch(music->native(), command.pitch);  
         }
         
-        void pitch(const Sound* sound, const AudioCommand& command){
+        void pitch(std::shared_ptr<Sound> sound, const AudioCommand& command){
 
             if(!sound) throw AudioException("Cannot set the pitch of a sound resource", ErrorCode::NullPointerException);
 
@@ -105,7 +105,7 @@ namespace Kotoba{
             ::SetSoundPitch(sound->native(), command.pitch);           
         }
 
-        void pan(const Music* music, const AudioCommand& command){
+        void pan(std::shared_ptr<Music> music, const AudioCommand& command){
 
             if(!music) throw AudioException("Cannot set the pan of a music resource", ErrorCode::NullPointerException);
 
@@ -115,7 +115,7 @@ namespace Kotoba{
 
         }
         
-        void pan(const Sound* sound, const AudioCommand& command){
+        void pan(std::shared_ptr<Sound> sound, const AudioCommand& command){
 
             if(!sound) throw AudioException("Cannot set the pan of a sound resource", ErrorCode::NullPointerException);
 
@@ -125,7 +125,7 @@ namespace Kotoba{
             
         }
 
-        void executeCommand(const Sound* sound, const AudioCommand& command){
+        void executeCommand(std::shared_ptr<Sound> sound, const AudioCommand& command){
 
             switch(command.type){
 
@@ -156,7 +156,7 @@ namespace Kotoba{
             }
         }
 
-        void executeCommand(const Music* music, const AudioCommand& command){
+        void executeCommand(std::shared_ptr<Music> music, const AudioCommand& command){
 
             switch(command.type){
 
@@ -205,7 +205,7 @@ namespace Kotoba{
         
         for(const auto& command : impl->queuedCommands){
 
-            std::visit([&command](const auto* audio){
+            std::visit([&command](const auto& audio){
 
                 executeCommand(audio, command);
 

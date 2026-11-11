@@ -362,4 +362,5 @@ namespace Kotoba{
         struct Impl;
         std::unique_ptr<Impl> impl;
     };
+    
 }

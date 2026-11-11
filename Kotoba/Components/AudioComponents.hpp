@@ -12,7 +12,7 @@ namespace Kotoba{
 
         constexpr AudioComponent() = default;
             
-        u64 resourceID{0};
+        ResourceID resourceID{0};
 
         bool shouldPlay{true};
         bool looping{false};

@@ -29,4 +29,7 @@ namespace Kotoba{
 
     //Time
     using Duration = std::chrono::duration<float>;
+
+    //Resources
+    using ResourceID = u64;
 }

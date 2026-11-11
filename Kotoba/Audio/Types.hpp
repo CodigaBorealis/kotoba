@@ -20,11 +20,11 @@ namespace Kotoba{
         Pan
     };
 
-    using AudioVariant = std::variant<Music*, Sound*>;
+    using AudioResource = std::variant<std::shared_ptr<Sound>, std::shared_ptr<Music>>;
 
     struct AudioCommand{
 
-        AudioVariant data{};
+        AudioResource data{};
         f32 volume{1};
         f32 pitch{1};
         f32 pan{0};
