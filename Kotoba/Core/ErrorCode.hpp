@@ -21,7 +21,7 @@ namespace Kotoba{
         // Initialization errors
         GraphicsInitializationFailed = 3000,
         AudioInitializationFailed,
-        //Scene
+        //Scene errors
         SceneEntityCreationFailed = 4000,
         SceneInvalidEntity,
         SceneComponentAlreadyExists,

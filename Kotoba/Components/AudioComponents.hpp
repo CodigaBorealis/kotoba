@@ -7,6 +7,10 @@ namespace Kotoba{
 
     using AudioVariant = std::variant<Music*, Sound*>;
 
+    /*
+    *Represents a component that can use an audio resource
+    */
+
     struct AudioComponent{
 
         constexpr AudioComponent() = default;

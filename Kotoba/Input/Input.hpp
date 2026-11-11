@@ -184,10 +184,10 @@ namespace Kotoba{
 
         private:
 
-        bool isPressed(const InputDevice::InputSignal& inputQuery);
-        bool isDown(const InputDevice::InputSignal& inputQuery);
-        bool isUp(const InputDevice::InputSignal& inputQuery);
-        bool isReleased(const InputDevice::InputSignal& inputQuery);
+        bool isPressed(const InputDevice::InputSignal& inputQuery);//Returns true if the given input is pressed during the frame
+        bool isDown(const InputDevice::InputSignal& inputQuery);//Returns true if the given input is down during the frame
+        bool isUp(const InputDevice::InputSignal& inputQuery);//Returns true if the given input is up during the frame
+        bool isReleased(const InputDevice::InputSignal& inputQuery);//Returns true if the given input is released during the frame
 
         struct ButtonTracker{
 

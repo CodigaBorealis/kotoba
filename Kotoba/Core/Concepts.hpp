@@ -58,6 +58,10 @@ namespace Kotoba{
     template<typename T>
     concept Numerical = SignedType<T> || UnsignedType<T> || FloatType<T>;
 
+    /*
+    *Checks whether a type is a valid component type
+    *Accepts types explicitly specialized or marked as components through IsComponent
+    */
 
     template<typename T>
 

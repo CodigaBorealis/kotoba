@@ -13,7 +13,7 @@ namespace Kotoba{
 
         constexpr SceneExtractor() = default;
 
-        std::vector<DrawCommand> collectCommands(Scene& scene);
+        std::vector<DrawCommand> collectCommands(Scene& scene);//Extracts rendering data from the entities inside a scene
         
     };      
 }

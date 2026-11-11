@@ -47,15 +47,14 @@ int main(){
     try{
         
         while(!window.shouldClose()){
-            
-            auto commands = extractor.collectCommands(scene);
-
-            renderer.submitBatch(commands);
 
             renderer.beginFrame();
             renderer.draw();
             renderer.endFrame();
+            
+            auto commands = extractor.collectCommands(scene);
 
+            renderer.submitBatch(commands);
         }
 
     }catch(Kotoba::Exception& e){

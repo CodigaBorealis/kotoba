@@ -7,6 +7,10 @@
 
 namespace Kotoba{
 
+    /*
+    *Represents a component that can be tinted by an rgba color
+    */
+
     struct ColorComponent{
 
         constexpr ColorComponent() = default;
@@ -18,6 +22,10 @@ namespace Kotoba{
             
         Color data{255, 255, 255, 255};
     };
+
+    /*
+    *Represents a component that can be transformed in space
+    */
 
     struct TransformComponent{
 
@@ -37,16 +45,29 @@ namespace Kotoba{
 
     using GeometryVariant = std::variant<Point, Line, Circle, Rectangle, Ellipse, Polygon>;
 
+    /*
+    *Represents a component that can hold a drawable primitive geometrical shape
+    *Supports Point, Line, Circle, Rectangle, Ellipse and Polygon
+    */
+
     struct GeometryComponent{
     
         GeometryVariant data{};
     };
 
+    /*
+    *Represents a component that can hold a drawable texture
+    */
+
     struct TextureComponent{
 
         Texture* data{};
     };
-    
+
+    /*
+    *Represents a component that can hold drawable text
+    */
+
     struct TextComponent{
         
         std::string text{"Text"};
@@ -54,6 +75,10 @@ namespace Kotoba{
         f32 spacing{1};
         Font* data{nullptr};
     };
+
+    /*
+    *Represents a component that can hold specific additional drawing instructions
+    */
 
     struct RenderStyleComponent{
 

@@ -24,6 +24,14 @@ namespace Kotoba{
             bool alive{false};
         };
 
+        // An entity handle consists of an index and a generation.
+        // The index identifies an entity slot, while the generation
+        // distinguishes different entities that have occupied that slot.
+
+        // When an entity is destroyed, its generation is incremented.
+        // This prevents previously obtained handles from referring to
+        // newly created entities that reuse the same index.
+
         struct Entity{
 
             static constexpr u32 InvalidIndex = std::numeric_limits<u32>::max();
@@ -51,6 +59,7 @@ namespace Kotoba{
         }   
         
         void clear(){
+        //Removes all entites from the scene
 
             for(auto& [type, storage] : componentStorages){
 
@@ -74,6 +83,8 @@ namespace Kotoba{
         Scene() = default;
 
         Entity create(){
+            
+            //Creates an entity
 
             u32 index;
 
@@ -98,6 +109,8 @@ namespace Kotoba{
         
         bool destroy(Entity entity){
 
+        //Returns true if the given entity can be destroyed, false otherwise
+
             if(!valid(entity)) return false;
 
             for(auto& [type, storage] : componentStorages){
@@ -117,6 +130,13 @@ namespace Kotoba{
 
         template<ComponentType T, typename... Args>
 
+        //Adds a component to an entity in the scene and returns a reference to the component
+        // Returns a non-owning reference to the component.
+        //
+        //The reference is only guaranteed to remain valid while the
+        //component exists in its storage. Removing the component,
+        //destroying its entity, or clearing the scene invalidates it.
+
         T& add(Entity entity, Args&&... args){
 
             if(!valid(entity)) throw SceneException("Invalid entity", ErrorCode::SceneEntityCreationFailed);
@@ -126,6 +146,13 @@ namespace Kotoba{
 
         template<ComponentType T, typename... Args>
 
+        //Adds a component to an entity in the scene if it doesn't already have it, throws otherwise
+        //Returns a non-owning reference to the component.
+        //
+        //The reference is only guaranteed to remain valid while the
+        //component exists in its storage. Removing the component,
+        //destroying its entity, or clearing the scene invalidates it.
+        
         T& emplace(Entity entity, Args&&... args){
 
             if(!valid(entity)) throw SceneException("Invalid entity", ErrorCode::SceneEntityCreationFailed);
@@ -134,6 +161,7 @@ namespace Kotoba{
         }
 
         template<ComponentType T>
+        //Returns a non-owning pointer to the given entity if it exists, returns nullptr otherwise
 
         T* get(Entity entity){
 
@@ -149,6 +177,7 @@ namespace Kotoba{
         }
 
         template<ComponentType T>
+        //Returns a const non-owning pointer to the given entity if it exists, returns nullptr otherwise
 
         const T* get(Entity entity) const{
 
@@ -166,6 +195,10 @@ namespace Kotoba{
 
         template<ComponentType T>
 
+        //Removes the specified component from the entity.
+        //Returns true if the component was successfully removed,
+        //or false if the entity is invalid or doesn't have the component.
+
         bool remove(Entity entity){
 
             if(!valid(entity)) return false;
@@ -179,6 +212,8 @@ namespace Kotoba{
         }
 
         template<ComponentType T>
+
+        //Returns true if the entity has the specified component.
 
         bool has(Entity entity) const{
 
@@ -247,6 +282,7 @@ namespace Kotoba{
         };
 
         template<typename T>
+        //Returns the components stored inside a given entity
 
         ComponentStorage<T>& getStorage(){
 
