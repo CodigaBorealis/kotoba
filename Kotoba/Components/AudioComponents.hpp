@@ -1,5 +1,6 @@
 #pragma once
 #include "Kotoba/Core/Resources.hpp"
+#include "Kotoba/Core/Concepts.hpp"
 #include <variant>
 
 namespace Kotoba{
@@ -16,5 +17,8 @@ namespace Kotoba{
             {}
             
         AudioVariant data{};
-    };
+    };            
+    
+    template<> inline constexpr bool IsComponent<AudioComponent> = true;
+
 }

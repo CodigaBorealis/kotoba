@@ -23,14 +23,14 @@ namespace Kotoba{
 
         constexpr TransformComponent() = default;
 
-        constexpr TransformComponent(Vec2i position, Vec2f scale, float rotation)
+        constexpr TransformComponent(Vec2f position, Vec2f scale, float rotation)
             :
             position(position),
             scale(scale),
             rotation(rotation)
             {}
         
-        Vec2i position{0, 0};
+        Vec2f position{0, 0};
         Vec2f scale{1.0f, 1.0f};
         float rotation{0};
     };
@@ -54,4 +54,35 @@ namespace Kotoba{
         f32 spacing{1};
         Font* data{nullptr};
     };
+
+    struct RenderStyleComponent{
+
+        enum class RenderStyle{
+
+            Fill,
+            Outline
+        };
+
+        constexpr RenderStyleComponent() = default;
+
+        constexpr RenderStyleComponent(RenderStyle style, Color color, float thickness = 1.0f)
+            :
+            style(style),
+            color(color),
+            thickness(thickness)
+            {}
+
+        RenderStyle style{RenderStyle::Fill};
+        Color color{255, 255, 255, 255};
+        float thickness{1.0f};
+    };
+
+    template<> inline constexpr bool IsComponent<ColorComponent> = true;
+    template<> inline constexpr bool IsComponent<TransformComponent> = true;
+    template<> inline constexpr bool IsComponent<GeometryComponent> = true;
+    template<> inline constexpr bool IsComponent<TextureComponent> = true;
+    template<> inline constexpr bool IsComponent<TextComponent> = true;
+    template<> inline constexpr bool IsComponent<RenderStyleComponent> = true;
+
+
 }

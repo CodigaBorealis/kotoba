@@ -11,10 +11,9 @@ namespace Kotoba{
 
         public:
 
-        const std::vector<DrawCommand>& collectCommands(Scene& scene);
-        
-        private:
+        constexpr SceneExtractor() = default;
 
-        std::vector<DrawCommand> commands{};
+        std::vector<DrawCommand> collectCommands(Scene& scene);
+        
     };      
 }

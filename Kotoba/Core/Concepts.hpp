@@ -61,6 +61,9 @@ namespace Kotoba{
 
     template<typename T>
 
-    concept ComponentType = std::is_object_v<T> && std::same_as<T, std::remove_cvref_t<T>> && !std::is_abstract_v<T> && std::is_destructible_v<T>;
+    inline constexpr bool IsComponent = false;
 
+    template<typename T>
+
+    concept ComponentType = IsComponent<T> && std::same_as<T, std::remove_cvref_t<T>> && std::is_destructible_v<T>;
 }

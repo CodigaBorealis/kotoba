@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <vector>
 #include "Types.hpp"
 
 namespace Kotoba{
@@ -32,15 +33,8 @@ namespace Kotoba{
         ~Renderer();
 
         void beginFrame();
-        void queue(Point point);
-        void queue(Line line);
-        void queue(Circle circle);
-        void queue(Triangle triangle);
-        void queue(Rectangle rectangle);
-        void queue(Ellipse ellipse);
-        void queue(Polygon polygon);
-        void queue(Texture texture);
-        void queue(Txt text);
+        void submit(DrawCommand command);
+        void submitBatch(std::vector<DrawCommand> commands);
         void draw();
         void endFrame();
 

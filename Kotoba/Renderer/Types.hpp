@@ -1,9 +1,13 @@
 #pragma once
 #include "Kotoba/Core/Types.hpp"
 #include "Kotoba/Math/Vec.hpp"
+#include <variant>
 
 namespace Kotoba{
 
+    struct TextComponent;
+    struct TextureComponent;
+    
     struct Color{
 
         constexpr Color() = default;
@@ -114,5 +118,20 @@ namespace Kotoba{
             
         i32 sides{6};
         f32 radius{10};
+    };
+
+    using Drawable = std::variant<Point, Line, Circle, Triangle, Rectangle, Ellipse, Polygon, TextureComponent*, TextComponent*>;
+
+    struct DrawCommand{
+
+        Drawable drawable{};
+
+        Vec2f position{0, 0};
+        Vec2f scale{1, 1};
+        f32 rotation{0};
+        Color tint{255, 255, 255, 255};
+        float outlineThickness{1};
+        Color outlineColor{};
+        bool outlineOnly{false};
     };
 }
