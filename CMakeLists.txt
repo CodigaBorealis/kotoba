@@ -23,6 +23,7 @@ add_executable(Kotoba
     src/Renderer.cpp
     src/Rect.cpp
     src/Vec.cpp
+    src/SceneExtractor.cpp
     main.cpp
 )
 

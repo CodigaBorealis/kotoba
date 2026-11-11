@@ -1,4 +1,4 @@
-#include "Kotoba/Core/Types.hpp"
+#include "Kotoba/Renderer/Types.hpp"
 #include "Kotoba/Core/Raylib.hpp"
 
 namespace Kotoba{

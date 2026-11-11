@@ -1,7 +1,6 @@
 #include "Kotoba/Input/Input.hpp"
 #include "Kotoba/Core/Types.hpp"
-#include <raylib.h>
-
+#include "Kotoba/Core/Raylib.hpp"
 namespace Kotoba{
     
     // Compile-time arrays of all supported buttons for iteration

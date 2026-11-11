@@ -4,10 +4,14 @@
 #include "Kotoba/Core/Types.hpp"
 #include "Kotoba/Math/Rect.hpp"
 #include "Kotoba/Math/Vec.hpp"
+#include "Kotoba/Renderer/Types.hpp"
 #include "Kotoba/Window/Window.hpp"
 #include "Kotoba/Core/Raylib.hpp"
-#include <raylib.h>
+#include "Kotoba/Core/Resources.hpp"
+#include "Kotoba/Components/GraphicalComponents.hpp"
 
+#include <iterator>
+#include <iostream>
 namespace Kotoba{
 
     struct Renderer::Impl{
@@ -42,149 +46,118 @@ namespace Kotoba{
             impl->canvas = ::LoadRenderTexture(static_cast<int>(size.x), static_cast<int>(size.y));
         }
 
+    void Renderer::submit(DrawCommand command){
+
+        impl->queuedCommands.push_back(std::move(command));
+    }
+
+    void Renderer::submitBatch(std::vector<DrawCommand> commands){
+
+        impl->queuedCommands.reserve(impl->queuedCommands.size() + commands.size());
+
+        std::move(commands.begin(), commands.end(), std::back_inserter(impl->queuedCommands));
+    }
+
     void Renderer::beginFrame(){
 
         ::BeginTextureMode(impl->canvas);
         ::ClearBackground(impl->clearColor);
     }
 
-    void Renderer::queue(Point point){
-
-        impl->queuedCommands.push_back(std::move(point));
-
-    }
-
-    void Renderer::queue(Line line){
-
-        impl->queuedCommands.push_back(std::move(line));
-
-    }
-
-    void Renderer::queue(Circle circle){
-
-        impl->queuedCommands.push_back(std::move(circle));
-
-    }
-
-    void Renderer::queue(Triangle triangle){
-
-        impl->queuedCommands.push_back(std::move(triangle));
-
-    }
-
-    void Renderer::queue(Rectangle rectangle){
-
-        impl->queuedCommands.push_back(std::move(rectangle));
-
-    }
-
-    void Renderer::queue(Ellipse ellipse){
-
-        impl->queuedCommands.push_back(std::move(ellipse));
-
-    }
-
-    void Renderer::queue(Polygon polygon){
-
-        impl->queuedCommands.push_back(std::move(polygon));
-
-    }
-
-    void Renderer::queue(Tex texture){
-
-        impl->queuedCommands.push_back(std::move(texture));
-
-    }
-
-    void Renderer::queue(Txt text){
-
-        impl->queuedCommands.push_back(std::move(text));
-    }
-
     namespace{
 
-        void drawCommand(const Renderer::Point& cmd){
+        void drawCommand(const Point& cmd, const DrawCommand& data){
 
-            ::DrawPixel(cmd.position.x, cmd.position.y, cmd.color);
+            std::cout << "DRAWING PIXEL\n";
+
+            ::DrawPixel(cmd.position.x, cmd.position.y, data.tint);
         }
 
-        void drawCommand(const Renderer::Line& cmd){
+        void drawCommand(const Line& cmd, const DrawCommand& data){
+            std::cout << "DRAWING LINE\n";
 
-            ::DrawLine(cmd.start.x, cmd.start.y, cmd.end.x, cmd.end.y, cmd.color);
+            ::DrawLine(cmd.start.x, cmd.start.y, cmd.end.x, cmd.end.y, data.tint);
         }
 
-        void drawCommand(const Renderer::Circle& cmd){
+        void drawCommand(const Circle& cmd, const DrawCommand& data){
+            std::cout << "DRAWING CIRCLE\n";
 
-            if(cmd.outlineOnly){
+            if(data.outlineOnly){
 
-                ::DrawCircleLines(cmd.center.x, cmd.center.y, cmd.radius, cmd.color);
+                ::DrawCircleLines(data.position.x, data.position.y, cmd.radius, data.tint);
 
             }else{
 
-                ::DrawCircle(cmd.center.x, cmd.center.y, cmd.radius, cmd.color);
+                ::DrawCircle(data.position.x, data.position.y, cmd.radius, data.tint);
             }
         }
 
-        void drawCommand(const Renderer::Triangle& cmd){
+        void drawCommand(const Triangle& cmd, const DrawCommand& data){
+            std::cout << "DRAWING TRIANGLE\n";
 
-            if(cmd.outlineOnly){
+            if(data.outlineOnly){
 
-                ::DrawTriangleLines(cmd.a, cmd.b, cmd.c, cmd.color);
+                ::DrawTriangleLines(cmd.a, cmd.b, cmd.c, data.tint);
 
             }else{
 
-                ::DrawTriangle(cmd.a, cmd.b, cmd.c, cmd.color);
+                ::DrawTriangle(cmd.a, cmd.b, cmd.c, data.tint);
             }
         }
 
-        void drawCommand(const Renderer::Rectangle& cmd){
+        void drawCommand(const Rectangle& cmd, const DrawCommand& data){
+            std::cout << "DRAWING RECTANGLE\n";
 
-            if(cmd.outlineOnly){
+            if(data.outlineOnly){
 
-                ::DrawRectangleLines(cmd.position.x, cmd.position.y, cmd.dimensions.x, cmd.dimensions.y, cmd.color);
+                ::DrawRectangleLines(data.position.x, data.position.y, cmd.dimensions.x, cmd.dimensions.y, data.tint);
 
             }else{
 
-                ::DrawRectangle(cmd.position.x, cmd.position.y, cmd.dimensions.x, cmd.dimensions.y, cmd.color);
+                ::DrawRectangle(data.position.x, data.position.y, cmd.dimensions.x, cmd.dimensions.y, data.tint);
             }
         }
 
-        void drawCommand(const Renderer::Ellipse& cmd){
+        void drawCommand(const Ellipse& cmd, const DrawCommand& data){
+            std::cout << "DRAWING ELLIPSE\n";
 
-            if(cmd.outlineOnly){
+            if(data.outlineOnly){
 
-                ::DrawEllipseLines(cmd.center.x, cmd.center.y, cmd.radiusH, cmd.radiusV, cmd.color);
+                ::DrawEllipseLines(data.position.x, data.position.y, cmd.radiusH, cmd.radiusV, data.tint);
 
             }else{
 
-                ::DrawEllipse(cmd.center.x, cmd.center.y, cmd.radiusH, cmd.radiusV, cmd.color);
+                ::DrawEllipse(data.position.x, data.position.y, cmd.radiusH, cmd.radiusV, data.tint);
             }
         }
 
-        void drawCommand(const Renderer::Polygon& cmd){
+        void drawCommand(const Polygon& cmd, const DrawCommand& data){
+            std::cout << "DRAWING POLYGON\n";
 
-            if(cmd.outlineOnly){
+            if(data.outlineOnly){
 
-                ::DrawPolyLines(cmd.center, cmd.sides, cmd.radius, cmd.rotation, cmd.color);
+                ::DrawPolyLines(data.position, cmd.sides, cmd.radius, data.rotation, data.tint);
 
             }else{
 
-                ::DrawPoly(cmd.center, cmd.sides, cmd.radius, cmd.rotation, cmd.color);
+                ::DrawPoly(data.position, cmd.sides, cmd.radius, data.rotation, data.tint);
             }
         }
 
-        void drawCommand(const Renderer::Tex& cmd){
+        void drawCommand(const TextureComponent* cmd, const DrawCommand& data){
+            std::cout << "DRAWING TEXTURE\n";
 
-            if(!cmd.texture) throw GraphicsException("Renderer expected a Texture pointer, got nullptr", ErrorCode::NullPointerException);
+            if(!cmd) throw GraphicsException("Renderer expected a Texture pointer, got nullptr", ErrorCode::NullPointerException);
 
-            ::DrawTextureEx(cmd.texture->native(), cmd.position, cmd.rotation, cmd.scale, cmd.tint);
+            ::DrawTextureEx(cmd->data->native(), data.position, data.rotation, data.scale.x, data.tint);
         }
 
-        void drawCommand(const Renderer::Txt& cmd){
+        void drawCommand(const TextComponent* cmd, const DrawCommand& data){
+            std::cout << "DRAWING TEXT\n";
 
-            if(!cmd.font) throw GraphicsException("Renderer expected a Font pointer, got nullptr", ErrorCode::NullPointerException);
+            if(!cmd->data) throw GraphicsException("Renderer expected a Font pointer, got nullptr", ErrorCode::NullPointerException);
 
-            ::DrawTextEx(cmd.font->native(), cmd.text.c_str(), cmd.position, cmd.fontSize, cmd.spacing, cmd.tint);
+            ::DrawTextEx(cmd->data->native(), cmd->text.c_str(), data.position, cmd->fontSize, cmd->spacing, data.tint);
         }
     }
 
@@ -192,11 +165,11 @@ namespace Kotoba{
 
         for(const auto& command : impl->queuedCommands){
 
-            std::visit([](const auto& cmd){
+            std::visit([&command](const auto& drawable){
 
-                drawCommand(cmd);
+                drawCommand(drawable, command);
 
-            }, command);
+            }, command.drawable);
         }
 
         impl->queuedCommands.clear();
