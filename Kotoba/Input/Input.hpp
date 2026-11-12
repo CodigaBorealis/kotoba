@@ -148,7 +148,7 @@ namespace Kotoba{
 
         struct ButtonState{
 
-            Duration heldDuration{0};
+            Miliseconds heldDuration{0};
             InputState state{InputState::Up};
             bool clicked{false};
         };
@@ -192,7 +192,7 @@ namespace Kotoba{
         struct ButtonTracker{
 
             bool wasDown{false};
-            Duration heldTime{0};
+            Miliseconds heldTime{0};
         };
 
         using MouseButton = InputDevice::Mouse::Button;
@@ -205,7 +205,7 @@ namespace Kotoba{
 
         InputDevice::ButtonState updateButton(ButtonTracker& tracker, IsDownFunction isDown, float deltaTime){
 
-            constexpr Duration CLICK_THRESHOLD{0.25};
+            constexpr Miliseconds CLICK_THRESHOLD{0.25};
 
             const bool down = isDown();
 
@@ -215,18 +215,18 @@ namespace Kotoba{
 
                 if(!tracker.wasDown){
 
-                    tracker.heldTime = Duration{0};
+                    tracker.heldTime = Miliseconds{0};
 
                     result.state = InputDevice::InputState::Pressed;
 
                 }else{
 
-                    tracker.heldTime += Duration{deltaTime};
+                    tracker.heldTime += Miliseconds{deltaTime};
 
                     result.state = InputDevice::InputState::Down;
                 }
 
-                result.heldDuration = Duration{tracker.heldTime};
+                result.heldDuration = Miliseconds{tracker.heldTime};
                 result.clicked = false;
 
             }else{
@@ -235,16 +235,16 @@ namespace Kotoba{
 
                     result.state = InputDevice::InputState::Released;
 
-                    result.heldDuration = Duration{tracker.heldTime};
+                    result.heldDuration = Miliseconds{tracker.heldTime};
 
                     result.clicked = tracker.heldTime <= CLICK_THRESHOLD;
 
-                    tracker.heldTime = Duration{0};
+                    tracker.heldTime = Miliseconds{0};
 
                 }else{
 
                     result.state = InputDevice::InputState::Up;
-                    result.heldDuration = Duration{0};
+                    result.heldDuration = Miliseconds{0};
                     result.clicked = false;
                 }
             }

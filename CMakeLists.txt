@@ -26,6 +26,8 @@ add_executable(Kotoba
     src/SceneExtractor.cpp
     src/AudioPlayer.cpp
     src/ResourceManager.cpp
+    src/RenderOrchestrator.cpp
+    src/Engine.cpp
     main.cpp
 )
 
