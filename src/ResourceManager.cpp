@@ -10,20 +10,20 @@
 #include <utility>
 #include <variant>
 namespace Kotoba{
-
+    
     struct ResourceManager::Impl{
         
-        using Resource = std::variant<std::shared_ptr<Image>, std::shared_ptr<Texture>, std::shared_ptr<Font>, std::shared_ptr<Music>, std::shared_ptr<Sound>>;
+        using Resource = std::variant<std::unique_ptr<Image>, std::unique_ptr<Texture>, std::unique_ptr<Font>, std::unique_ptr<Music>, std::unique_ptr<Sound>>;
 
         template<typename T>
                 
-        std::shared_ptr<T> get(ResourceID id) const{
+        const T* get(ResourceID id) const{
 
             auto it = resources.find(id);
 
             if(it == resources.end()) return nullptr;
 
-            if(auto resource = std::get_if<std::shared_ptr<T>>(&it->second)) return *resource;
+            if(auto* resource = std::get_if<std::unique_ptr<T>>(&it->second)) return resource->get();
                     
             throw ResourceException("This id belongs to a resource of a different type: " + std::to_string(id), ErrorCode::ResourceBadRequest);
         }
@@ -32,6 +32,8 @@ namespace Kotoba{
 
         ResourceID loadResource(const std::filesystem::path& file){
 
+            if(file.empty()) throw ResourceException("The path to a file cannot be empty", ErrorCode::ResourceLoadFailed);
+
             auto normalized = file.lexically_normal().string();
 
             auto key = std::make_pair(normalized, std::type_index(typeid(T)));
@@ -39,7 +41,7 @@ namespace Kotoba{
 
             if(seenFiles.contains(key)) throw ResourceException("This file has already been loaded: " + normalized, ErrorCode::ResourceDuplicatedResource);
 
-            auto resource = std::make_shared<T>(file);
+            auto resource = std::make_unique<T>(file);
 
             ResourceID id = ++lastID;
 
@@ -55,6 +57,13 @@ namespace Kotoba{
         ResourceID lastID{0};
     };
 
+    ResourceManager::ResourceManager()
+        :
+        impl(std::make_unique<Impl>())
+        {}
+
+    ResourceManager::~ResourceManager() = default;   
+    
     ResourceID ResourceManager::loadImage(const std::filesystem::path& file){
 
         //Someone else manages actually veryfing that the paths are valid
@@ -96,27 +105,27 @@ namespace Kotoba{
 
     }
 
-    std::shared_ptr<Image> ResourceManager::getImage(ResourceID id) const{
+    const Image* ResourceManager::getImage(ResourceID id) const{
 
         return impl->get<Image>(id);
     }
 
-    std::shared_ptr<Texture> ResourceManager::getTexture(ResourceID id) const{
+    const Texture* ResourceManager::getTexture(ResourceID id) const{
 
         return impl->get<Texture>(id);
     }
 
-    std::shared_ptr<Font> ResourceManager::getFont(ResourceID id) const{
+    const Font* ResourceManager::getFont(ResourceID id) const{
 
         return impl->get<Font>(id);
     }
 
-    std::shared_ptr<Music> ResourceManager::getMusic(ResourceID id) const{
+    const Music* ResourceManager::getMusic(ResourceID id) const{
 
         return impl->get<Music>(id);
     }
 
-    std::shared_ptr<Sound> ResourceManager::getSound(ResourceID id) const{
+    const Sound* ResourceManager::getSound(ResourceID id) const{
 
         return impl->get<Sound>(id);
     }

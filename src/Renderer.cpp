@@ -10,7 +10,6 @@
 #include "Kotoba/Core/Resources.hpp"
 #include "Kotoba/Components/GraphicalComponents.hpp"
 #include <iterator>
-#include <iostream>
 
 namespace Kotoba{
 
@@ -68,19 +67,16 @@ namespace Kotoba{
 
         void drawCommand(const Point& cmd, const DrawCommand& data){
 
-            std::cout << "DRAWING PIXEL\n";
 
             ::DrawPixel(cmd.position.x, cmd.position.y, data.tint);
         }
 
         void drawCommand(const Line& cmd, const DrawCommand& data){
-            std::cout << "DRAWING LINE\n";
 
             ::DrawLine(cmd.start.x, cmd.start.y, cmd.end.x, cmd.end.y, data.tint);
         }
 
         void drawCommand(const Circle& cmd, const DrawCommand& data){
-            std::cout << "DRAWING CIRCLE\n";
 
             if(data.outlineOnly){
 
@@ -93,7 +89,6 @@ namespace Kotoba{
         }
 
         void drawCommand(const Triangle& cmd, const DrawCommand& data){
-            std::cout << "DRAWING TRIANGLE\n";
 
             if(data.outlineOnly){
 
@@ -106,7 +101,6 @@ namespace Kotoba{
         }
 
         void drawCommand(const Rectangle& cmd, const DrawCommand& data){
-            std::cout << "DRAWING RECTANGLE\n";
 
             if(data.outlineOnly){
 
@@ -119,7 +113,6 @@ namespace Kotoba{
         }
 
         void drawCommand(const Ellipse& cmd, const DrawCommand& data){
-            std::cout << "DRAWING ELLIPSE\n";
 
             if(data.outlineOnly){
 
@@ -132,7 +125,6 @@ namespace Kotoba{
         }
 
         void drawCommand(const Polygon& cmd, const DrawCommand& data){
-            std::cout << "DRAWING POLYGON\n";
 
             if(data.outlineOnly){
 
@@ -144,20 +136,18 @@ namespace Kotoba{
             }
         }
 
-        void drawCommand(const TextureComponent* cmd, const DrawCommand& data){
-            std::cout << "DRAWING TEXTURE\n";
+        void drawCommand(const Texture* cmd, const DrawCommand& data){
 
             if(!cmd) throw GraphicsException("Renderer expected a Texture pointer, got nullptr", ErrorCode::NullPointerException);
 
-            ::DrawTextureEx(cmd->data->native(), data.position, data.rotation, data.scale.x, data.tint);
+            ::DrawTextureEx(cmd->native(), data.position, data.rotation, data.scale.x, data.tint);
         }
 
-        void drawCommand(const TextComponent* cmd, const DrawCommand& data){
-            std::cout << "DRAWING TEXT\n";
+        void drawCommand(const TextCommand cmd, const DrawCommand& data){
 
-            if(!cmd->data) throw GraphicsException("Renderer expected a Font pointer, got nullptr", ErrorCode::NullPointerException);
+            if(!cmd.font) throw GraphicsException("Renderer expected a Font pointer, got nullptr", ErrorCode::NullPointerException);
 
-            ::DrawTextEx(cmd->data->native(), cmd->text.c_str(), data.position, cmd->fontSize, cmd->spacing, data.tint);
+            ::DrawTextEx(cmd.font->native(), cmd.text.c_str(), data.position, cmd.fontSize, cmd.spacing, data.tint);
         }
     }
 

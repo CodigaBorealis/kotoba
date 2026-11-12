@@ -1,5 +1,6 @@
 #pragma once
 #include "Kotoba/Core/Resources.hpp"
+#include "Kotoba/Core/Types.hpp"
 #include "Kotoba/Math/Vec.hpp"
 #include "Kotoba/Renderer/Types.hpp"
 #include <string>
@@ -61,7 +62,7 @@ namespace Kotoba{
 
     struct TextureComponent{
 
-        Texture* data{};
+        ResourceID resourceID{0};
     };
 
     /*

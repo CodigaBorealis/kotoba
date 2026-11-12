@@ -9,17 +9,20 @@ namespace Kotoba{
 
         public:
 
+        ResourceManager();
+        ~ResourceManager();
+        
         ResourceID loadImage(const std::filesystem::path& file);
         ResourceID loadTexture(const std::filesystem::path& file);
         ResourceID loadFont(const std::filesystem::path& file);
         ResourceID loadMusic(const std::filesystem::path& file);
         ResourceID loadSound(const std::filesystem::path& file);
 
-        std::shared_ptr<Image> getImage(ResourceID id) const;
-        std::shared_ptr<Texture> getTexture(ResourceID id) const;
-        std::shared_ptr<Font>  getFont(ResourceID id) const;
-        std::shared_ptr<Music> getMusic(ResourceID id) const;
-        std::shared_ptr<Sound> getSound(ResourceID id) const;
+         const Image* getImage(ResourceID id) const;
+         const Texture* getTexture(ResourceID id) const;
+         const Font* getFont(ResourceID id) const;
+         const Music* getMusic(ResourceID id) const;
+         const Sound* getSound(ResourceID id) const;
         
         private:
 

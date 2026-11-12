@@ -6,13 +6,17 @@
 #include "Kotoba/Renderer/Renderer.hpp"
 #include "Kotoba/Renderer/SceneExtractor.hpp"
 #include "Kotoba/Renderer/Types.hpp"
+#include "Kotoba/ResourceManager/ResourceManager.hpp"
 #include "Kotoba/Scene/Scene.hpp"
 #include "Kotoba/Window/Window.hpp"
 
 int main(){
-        
+    
     Kotoba::Window window{{}};
 
+    Kotoba::ResourceManager resourceManager{};
+
+    auto textureID = resourceManager.loadTexture("/home/xd/Pictures/aigis.png");
     Kotoba::Renderer renderer{window};
     Kotoba::Scene scene{};
 
@@ -27,7 +31,6 @@ int main(){
     Kotoba::Point point{{0,0}};
     Kotoba::Color color2{255, 0, 255, 255};
 
-    Kotoba::Line line{{500,100},{100,1000}};
     Kotoba::Color color3{255, 0, 0, 255};
 
     scene.add<Kotoba::GeometryComponent>(entity, circle);
@@ -37,12 +40,12 @@ int main(){
     scene.add<Kotoba::GeometryComponent>(entity2, point);
     scene.add<Kotoba::ColorComponent>(entity2, color2);
 
-    scene.add<Kotoba::GeometryComponent>(entity3, line);
+    scene.add<Kotoba::TextureComponent>(entity3, textureID);
     scene.add<Kotoba::ColorComponent>(entity3, color3);
-
+    
     auto linePtr = scene.get<Kotoba::GeometryComponent>(entity);
 
-    Kotoba::SceneExtractor extractor{};
+    Kotoba::SceneExtractor extractor{resourceManager};
 
     try{
         
