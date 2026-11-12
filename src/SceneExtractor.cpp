@@ -1,4 +1,6 @@
 #include "Kotoba/Renderer/SceneExtractor.hpp"
+#include "Kotoba/Renderer/SceneExtractor.hpp"
+#include "Kotoba/ResourceManager/ResourceManager.hpp"
 #include "Kotoba/Components/GraphicalComponents.hpp"
 #include "Kotoba/Renderer/Types.hpp"
 #include "Kotoba/Scene/Scene.hpp"
@@ -43,6 +45,13 @@ namespace Kotoba{
                     return shape;
                     
                 }, geometry->data);
+            }
+
+            if(auto* texture = scene.get<TextureComponent>(entity)){
+
+                auto* tex = resources.getTexture(texture->resourceID);
+
+                command.drawable = tex;
             }
 
             if(auto* renderStyle = scene.get<RenderStyleComponent>(entity)){

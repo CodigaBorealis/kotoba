@@ -26,7 +26,26 @@ namespace Kotoba{
     //General-purpose types
     using usize = std::size_t;
     using isize = std::ptrdiff_t;
+    struct Color{
 
+        constexpr Color() = default;
+
+        constexpr Color(u8 r, u8 g, u8 b, u8 a)
+            :
+            r(r),
+            g(g),
+            b(b),
+            a(a)
+            {}
+        operator ::Color() const;
+        u8 r{255};
+        u8 g{0};
+        u8 b{0};
+        u8 a{255};
+    };
     //Time
     using Duration = std::chrono::duration<float>;
+
+    //Resources
+    using ResourceID = u64;
 }

@@ -60,6 +60,7 @@ namespace Kotoba{
 
         [[nodiscard]] const ::Image& native() const noexcept;
 
+        [[nodiscard]] bool isValid() const noexcept;
         /*
         * @param path The filesystem path to the image file
         * Constructs an Image by loading the resource from the specified file
@@ -129,6 +130,7 @@ namespace Kotoba{
         */
 
         [[nodiscard]] const ::Texture& native() const noexcept;
+        [[nodiscard]] bool isValid() const noexcept;
 
         /*
         * @param path The filesystem path to the texture file
@@ -198,7 +200,8 @@ namespace Kotoba{
         */
 
         [[nodiscard]] const ::Font& native() const noexcept;
-        
+        [[nodiscard]] bool isValid() const noexcept;
+
        /*
         * @param path The filesystem path to the font file
         * Constructs a Font by loading the resource from the specified file
@@ -266,6 +269,7 @@ namespace Kotoba{
         */
 
         [[nodiscard]] const ::Music& native() const noexcept;
+        [[nodiscard]] bool isValid() const noexcept;
 
         /*
         * @param path The filesystem path to the music file
@@ -327,6 +331,8 @@ namespace Kotoba{
         */
 
         [[nodiscard]] const ::Sound& native() const noexcept;
+        [[nodiscard]] bool isValid() const noexcept;
+
         /*
         * @param path The filesystem path to the sound file
         * Constructs a Sound resource by loading the specified file
@@ -356,4 +362,5 @@ namespace Kotoba{
         struct Impl;
         std::unique_ptr<Impl> impl;
     };
+    
 }

@@ -18,6 +18,8 @@ namespace Kotoba{
         ResourceNotFound = 2000,
         ResourceLoadFailed,
         ResourceInvalidFormat,
+        ResourceBadRequest,
+        ResourceDuplicatedResource,
         // Initialization errors
         GraphicsInitializationFailed = 3000,
         AudioInitializationFailed,

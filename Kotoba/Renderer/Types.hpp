@@ -4,27 +4,8 @@
 #include <variant>
 
 namespace Kotoba{
-
-    struct TextComponent;
-    struct TextureComponent;
-    
-    struct Color{
-
-        constexpr Color() = default;
-
-        constexpr Color(u8 r, u8 g, u8 b, u8 a)
-            :
-            r(r),
-            g(g),
-            b(b),
-            a(a)
-            {}
-        operator ::Color() const;
-        u8 r{255};
-        u8 g{0};
-        u8 b{0};
-        u8 a{255};
-    };
+    struct Texture;
+    struct Font;
 
     struct Point{
 
@@ -120,7 +101,16 @@ namespace Kotoba{
         f32 radius{10};
     };
 
-    using Drawable = std::variant<Point, Line, Circle, Triangle, Rectangle, Ellipse, Polygon, TextureComponent*, TextComponent*>;
+    struct TextCommand{
+        
+        std::string text{"Text"};
+        const Font* font{nullptr};
+        f32 fontSize{24};
+        f32 spacing{1};
+
+    };
+
+    using Drawable = std::variant<Point, Line, Circle, Triangle, Rectangle, Ellipse, Polygon, const Texture*, TextCommand>;
 
     struct DrawCommand{
 
@@ -131,7 +121,7 @@ namespace Kotoba{
         f32 rotation{0};
         Color tint{255, 255, 255, 255};
         float outlineThickness{1};
-        Color outlineColor{};
+        Color outlineColor{255, 0, 0, 255};
         bool outlineOnly{false};
     };
 }

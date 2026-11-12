@@ -8,7 +8,6 @@ namespace Kotoba{
     struct Window;
 
     class Renderer{
-
         public:
         //Commands
 /*Used somewhere else

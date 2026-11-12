@@ -87,4 +87,11 @@ namespace Kotoba{
 
         using Exception::Exception;
     };
+
+    class AudioException : public Exception{
+
+        public:
+
+        using Exception::Exception;
+    };
 }
