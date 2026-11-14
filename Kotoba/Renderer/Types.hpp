@@ -120,7 +120,7 @@ namespace Kotoba{
         Vec2f scale{1, 1};
         f32 rotation{0};
         Color tint{255, 255, 255, 255};
-        float outlineThickness{1};
+        f32 outlineThickness{1};
         Color outlineColor{255, 0, 0, 255};
         bool outlineOnly{false};
     };

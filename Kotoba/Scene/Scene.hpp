@@ -219,6 +219,25 @@ namespace Kotoba{
             return get<T>(entity) != nullptr;
         }
 
+        template<typename Func>
+
+        void forEachEntity(Func&& func){
+
+            const auto& entities = getEntities();
+
+            for(u32 x = 0; x < entities.size(); x++) {
+
+                const auto& slot = entities[x];
+
+                if(!slot.alive)
+                    continue;
+
+                Entity entity{x, slot.generation};
+
+                func(entity);
+            }
+        }
+        
         private:
 
         struct IComponentStorage{
@@ -302,7 +321,7 @@ namespace Kotoba{
 
             return static_cast<ComponentStorage<T>&>(*it->second);
         }
-        
+
         std::vector<EntitySlot> entities{};
         std::vector<u32> freeEntities{};
         std::unordered_map<std::type_index, std::unique_ptr<IComponentStorage>> componentStorages{};

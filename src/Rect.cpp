@@ -23,7 +23,7 @@ namespace Kotoba{
 
     Rect<T>::operator ::Rectangle() const{
 
-        return{static_cast<float>(x), static_cast<float>(y), static_cast<float>(width), static_cast<float>(height)};
+        return{static_cast<f32>(x), static_cast<f32>(y), static_cast<f32>(width), static_cast<f32>(height)};
     }
 
     template Rect<f32>::operator ::Rectangle() const;

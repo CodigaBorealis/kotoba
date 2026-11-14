@@ -1,8 +1,10 @@
 #include "Kotoba/Engine.hpp"
+#include "Kotoba/Components/AudioComponents.hpp"
+#include "Kotoba/Core/Raylib.hpp"
+#include "Kotoba/Audio/AudioPlayer.hpp"
 #include "Kotoba/Renderer/Renderer.hpp"
 #include "Kotoba/Renderer/SceneExtractor.hpp"
-#include <raylib.h>
-
+#include "Kotoba/Scene/Scene.hpp"
 namespace Kotoba{
 
     struct Engine::Impl{
@@ -19,16 +21,33 @@ namespace Kotoba{
         Scene activeScene;
         Renderer renderer;
         SceneExtractor extractor;
+        AudioPlayer audio;
 
         void render(){
 
-            auto commands = extractor.collectCommands(activeScene);
+            renderer.beginFrame();
 
+            auto commands = extractor.collectDrawCommands(activeScene);
             renderer.submitBatch(commands);
 
-            renderer.beginFrame();
             renderer.draw();
             renderer.endFrame();
+        }
+
+        void update(){
+
+            auto audioCommands= extractor.collectAudioCommands(activeScene); 
+
+            audio.submitBatch(audioCommands);
+            audio.execute();
+
+            activeScene.forEachEntity([this](Scene::Entity entity){
+
+                if(auto* playback = activeScene.get<AudioPlaybackComponent>(entity)){
+
+                    if(playback->shouldPlay) playback->shouldPlay = false;
+                }
+            });
         }
     };
 
@@ -39,15 +58,18 @@ namespace Kotoba{
 
     Engine::~Engine() = default;
 
-    void Engine::run(const std::function<void(float dt)>& updateCallback){
+    void Engine::run(const std::function<void(f32 dt)>& updateCallback){
 
         while(!impl->window.shouldClose()){
 
-            float dt = ::GetFrameTime();
+            f32 dt = ::GetFrameTime();
+
+            impl->update();
 
             if(updateCallback) updateCallback(dt);
 
             impl->render();
+            
         }
     }
 
@@ -64,6 +86,11 @@ namespace Kotoba{
     Scene& Engine::scene(){
 
         return impl->activeScene;
+    }
+
+    AudioPlayer& Engine::audio(){
+
+        return impl->audio;
     }
 
 }

@@ -32,7 +32,7 @@ namespace Kotoba{
 
         constexpr TransformComponent() = default;
 
-        constexpr TransformComponent(Vec2f position, Vec2f scale, float rotation)
+        constexpr TransformComponent(Vec2f position, Vec2f scale, f32 rotation)
             :
             position(position),
             scale(scale),
@@ -41,7 +41,7 @@ namespace Kotoba{
         
         Vec2f position{0, 0};
         Vec2f scale{1.0f, 1.0f};
-        float rotation{0};
+        f32 rotation{0};
     };
 
     using GeometryVariant = std::variant<Point, Line, Circle, Rectangle, Ellipse, Polygon>;
@@ -91,7 +91,7 @@ namespace Kotoba{
 
         constexpr RenderStyleComponent() = default;
 
-        constexpr RenderStyleComponent(RenderStyle style, Color color, float thickness = 1.0f)
+        constexpr RenderStyleComponent(RenderStyle style, Color color, f32 thickness = 1.0f)
             :
             style(style),
             color(color),
@@ -100,7 +100,7 @@ namespace Kotoba{
 
         RenderStyle style{RenderStyle::Fill};
         Color color{255, 255, 255, 255};
-        float thickness{1.0f};
+        f32 thickness{1.0f};
     };
 
     template<> inline constexpr bool IsComponent<ColorComponent> = true;

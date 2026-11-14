@@ -17,7 +17,7 @@ namespace Kotoba{
 
         template<typename T>
                 
-        const T* get(ResourceID id) const{
+        T* get(ResourceID id) const{
 
             auto it = resources.find(id);
 
@@ -105,27 +105,27 @@ namespace Kotoba{
 
     }
 
-    const Image* ResourceManager::getImage(ResourceID id) const{
+    Image* ResourceManager::getImage(ResourceID id) const{
 
         return impl->get<Image>(id);
     }
 
-    const Texture* ResourceManager::getTexture(ResourceID id) const{
+    Texture* ResourceManager::getTexture(ResourceID id) const{
 
         return impl->get<Texture>(id);
     }
 
-    const Font* ResourceManager::getFont(ResourceID id) const{
+    Font* ResourceManager::getFont(ResourceID id) const{
 
         return impl->get<Font>(id);
     }
 
-    const Music* ResourceManager::getMusic(ResourceID id) const{
+    Music* ResourceManager::getMusic(ResourceID id) const{
 
         return impl->get<Music>(id);
     }
 
-    const Sound* ResourceManager::getSound(ResourceID id) const{
+    Sound* ResourceManager::getSound(ResourceID id) const{
 
         return impl->get<Sound>(id);
     }

@@ -131,9 +131,9 @@ namespace Kotoba{
         *Returns the length as a double
         */
 
-        double length() const{
+        f64 length() const{
 
-        return std::hypot(static_cast<double>(x), static_cast<double>(y));
+        return std::hypot(static_cast<f64>(x), static_cast<f64>(y));
         
         }
 
@@ -157,7 +157,7 @@ namespace Kotoba{
 
         Vec<T> normalized() const requires std::is_floating_point_v<T>{
 
-            double len = length();
+            f64 len = length();
 
             if(len == T{0}) return {T{0}, T{0}};
 
@@ -171,7 +171,7 @@ namespace Kotoba{
         *Returns the distance as a double
         */
 
-        static double distance(const Vec<T>& a, const Vec<T>& b){
+        static f64 distance(const Vec<T>& a, const Vec<T>& b){
 
             return (a - b).length();
         }

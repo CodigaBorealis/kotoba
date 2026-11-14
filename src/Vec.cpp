@@ -22,7 +22,7 @@ namespace Kotoba{
 
     Vec<T>::operator ::Vector2() const{
 
-            return{static_cast<float>(x),static_cast<float>(y)};
+            return{static_cast<f32>(x),static_cast<f32>(y)};
     }
 
     template Vec<f32>::operator ::Vector2() const;

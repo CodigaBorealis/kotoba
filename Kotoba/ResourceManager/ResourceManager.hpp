@@ -18,11 +18,11 @@ namespace Kotoba{
         ResourceID loadMusic(const std::filesystem::path& file);
         ResourceID loadSound(const std::filesystem::path& file);
 
-         const Image* getImage(ResourceID id) const;
-         const Texture* getTexture(ResourceID id) const;
-         const Font* getFont(ResourceID id) const;
-         const Music* getMusic(ResourceID id) const;
-         const Sound* getSound(ResourceID id) const;
+         Image* getImage(ResourceID id) const;
+         Texture* getTexture(ResourceID id) const;
+         Font* getFont(ResourceID id) const;
+         Music* getMusic(ResourceID id) const;
+         Sound* getSound(ResourceID id) const;
         
         private:
 

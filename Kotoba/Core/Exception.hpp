@@ -26,7 +26,7 @@ namespace Kotoba{
         Exception(std::string message, ErrorCode code = ErrorCode::None)
         :
         code(code),
-        message(std::move(message))
+        message(std::move(message) + "\n")
         {}
 
         /*

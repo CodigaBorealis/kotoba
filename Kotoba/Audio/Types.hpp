@@ -20,7 +20,7 @@ namespace Kotoba{
         Pan
     };
 
-    using AudioResource = std::variant<std::shared_ptr<Sound>, std::shared_ptr<Music>>;
+    using AudioResource = std::variant<Sound*, Music*>;
 
     struct AudioCommand{
 
@@ -30,6 +30,7 @@ namespace Kotoba{
         f32 pan{0};
         PlaybackState state{PlaybackState::Stopped};
         CommandType type{CommandType::Play};
+        bool play{true};
         bool looping{false};
     };
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Kotoba/Audio/Types.hpp"
+#include "Kotoba/Input/Types.hpp"
 #include "Types.hpp"
 #include <vector>
 
@@ -18,7 +20,12 @@ namespace Kotoba{
             resources(resources)
             {}
 
-        std::vector<DrawCommand> collectCommands(Scene& scene);//Extracts rendering data from the entities inside a scene
+        std::vector<DrawCommand> collectDrawCommands(Scene& scene);//Extracts rendering data from the entities inside a scene
+        std::vector<AudioCommand> collectAudioCommands(Scene& scene);
+        std::vector<InputDevice::Event> collectInputCommands(Scene& scene);
+        
+        private:
+        
         ResourceManager& resources;
     };      
-}
+}   

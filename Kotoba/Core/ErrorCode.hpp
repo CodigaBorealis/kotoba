@@ -1,12 +1,13 @@
 #pragma once
 #include "Types.hpp"
+#include <limits>
 
 namespace Kotoba{
     /*
     *Represents error codes used throughout the Kotoba engine
     *Groups errors by category using distinct numerical ranges
     */
-    enum class ErrorCode : u64{
+    enum class ErrorCode : u32{
 
         None = 0,
         // Window errors
@@ -29,7 +30,7 @@ namespace Kotoba{
         SceneComponentAlreadyExists,
         SceneComponentCreationFailed,
         //nullptr
-        NullPointerException
+        NullPointerException = std::numeric_limits<u32>::max()
         
 
     };

@@ -265,7 +265,7 @@ namespace Kotoba{
 
         InputDevice::Event nextEvent{};
 
-        const float deltaTime = ::GetFrameTime();
+        const f32 deltaTime = ::GetFrameTime();
 
         Vector2 mousePos = ::GetMousePosition();
         Vector2 mouseDelta = ::GetMouseDelta();

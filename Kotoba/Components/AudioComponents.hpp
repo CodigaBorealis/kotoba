@@ -5,30 +5,34 @@
 namespace Kotoba{
 
     /*
-    *Represents a component that can have an audio resource
+    *Represents a component that can have a Music resource
     */
 
-    struct AudioComponent{
-
-        constexpr AudioComponent() = default;
+    struct MusicComponent{
             
         ResourceID resourceID{0};
-
-        bool shouldPlay{true};
-        bool looping{false};
-        float volume{1.0f};
-
-        bool playRequested{true};
     };   
+    
+    /*
+    *Represents a component that can have a Sound resource
+    */
+
+    struct SoundComponent{
+
+        ResourceID resourceID{0};
+    };
 
     /*
-    *Represents a component that can control the playback state
+    *Represents a component that can play audio
     */
 
     struct AudioPlaybackComponent{
 
         PlaybackState state{PlaybackState::Stopped};
-    };
+        bool looping{false};
+        bool shouldPlay{true};
+
+    };  
 
     /*
     *Represents a component that can control the volume of an audio component
@@ -51,23 +55,19 @@ namespace Kotoba{
     *Represents a component that can loop an audio component
     */
 
-    struct AudioLoopComponent{
-
-        bool looping{false};
-    };
-
     /*
     *Represents a component that can control the paning of an audio component
     */
 
     struct AudioPanComponent{
 
-        bool looping{false};
+        f32 pan{0};
     };
-    template<> inline constexpr bool IsComponent<AudioComponent> = true;
+    template<> inline constexpr bool IsComponent<MusicComponent> = true;
+    template<> inline constexpr bool IsComponent<SoundComponent> = true;
     template<> inline constexpr bool IsComponent<AudioPlaybackComponent> = true;
     template<> inline constexpr bool IsComponent<AudioVolumeComponent> = true;
     template<> inline constexpr bool IsComponent<AudioPitchComponent> = true;
-    template<> inline constexpr bool IsComponent<AudioLoopComponent> = true;
+    template<> inline constexpr bool IsComponent<AudioPanComponent> = true;
 
 }
