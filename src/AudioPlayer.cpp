@@ -135,7 +135,7 @@ namespace Kotoba{
         }
 
         void executeCommand(Sound* sound, const AudioCommand& command){
-
+            //Sounds do not work for some reason
             switch(command.type){
 
                 case CommandType::Play:

@@ -22,8 +22,6 @@ int main(){
         auto textureID = resourceManager.loadTexture("/home/xd/Pictures/aigis.png");
         auto musicID = resourceManager.loadMusic("/home/xd/Downloads/output.ogg");
 
-        engine.audio().submit({resourceManager.getMusic(musicID)});
-
         auto entity = scene.create();
         auto entity2 = scene.create();
         auto entity3 = scene.create();
