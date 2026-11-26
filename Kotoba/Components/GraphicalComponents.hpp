@@ -41,6 +41,7 @@ namespace Kotoba{
         
         Vec2f position{0, 0};
         Vec2f scale{1.0f, 1.0f};
+        Vec2f origin{0, 0};
         f32 rotation{0};
     };
 
@@ -74,7 +75,7 @@ namespace Kotoba{
         std::string text{"Text"};
         f32 fontSize{24};
         f32 spacing{1};
-        Font* data{nullptr};
+        ResourceID resourceID{0};
     };
 
     /*
@@ -91,16 +92,14 @@ namespace Kotoba{
 
         constexpr RenderStyleComponent() = default;
 
-        constexpr RenderStyleComponent(RenderStyle style, Color color, f32 thickness = 1.0f)
+        constexpr RenderStyleComponent(RenderStyle style, Color color)
             :
             style(style),
-            color(color),
-            thickness(thickness)
+            color(color)
             {}
 
         RenderStyle style{RenderStyle::Fill};
         Color color{255, 255, 255, 255};
-        f32 thickness{1.0f};
     };
 
     template<> inline constexpr bool IsComponent<ColorComponent> = true;

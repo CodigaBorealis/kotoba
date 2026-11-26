@@ -28,6 +28,7 @@ namespace Kotoba{
                 command.position = transform->position;
                 command.scale = transform->scale;
                 command.rotation = transform->rotation;
+                command.origin = transform->origin;
             }
 
             if(auto* color = scene.get<ColorComponent>(entity)){
@@ -55,16 +56,23 @@ namespace Kotoba{
             if(auto* renderStyle = scene.get<RenderStyleComponent>(entity)){
             
                 hasGraphics = true;
-                if(renderStyle->style == RenderStyleComponent::RenderStyle::Outline){
 
-                    command.outlineOnly = true;
 
-                }else{
+                command.outlineOnly = renderStyle->style == RenderStyleComponent::RenderStyle::Outline;
+                command.outlineColor = renderStyle->color;
+                
+            }
 
-                    command.outlineOnly = false;
-                    command.outlineColor = renderStyle->color;
-                    command.outlineThickness = renderStyle->thickness;
-                }
+            if(auto* text = scene.get<TextComponent>(entity)){
+
+                hasGraphics = true;
+
+                command.drawable = TextCommand{
+                    text->text,
+                    resources.getFont(text->resourceID),
+                    text->fontSize,
+                    text->spacing
+                };
             }
 
             if(!hasGraphics) return;
