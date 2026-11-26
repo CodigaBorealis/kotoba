@@ -31,7 +31,7 @@ int main(){
         auto entity3 = scene.create();
         auto entity4 = scene.create();
         auto entity5 = scene.create();
-        //something
+        //a
         Kotoba::Circle circle{100.0f};
         Kotoba::Color color{0,0,0,255};
         Kotoba::TransformComponent transform{{100, 100}, {2, 0.3}, 50.f};
