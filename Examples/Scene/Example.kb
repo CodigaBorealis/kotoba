@@ -1,0 +1,66 @@
+#Kotoba Scene Definition File
+
+Resources {
+    texture aigisTexture = "/home/xd/Pictures/aigis.png"
+    music   bgmMusic     = "/home/xd/Downloads/output.ogg"
+}
+
+EngineConfig {
+    #Mirrors engine.audio().submit({resourceManager.getMusic(musicID)})
+    submitAudio = [ bgmMusic ]
+}
+
+Entities {
+
+    #Entity 1: Circle with Color
+    Entity {
+        GeometryComponent {
+            type = Circle
+            radius = 100.0
+        }
+        ColorComponent {
+            r = 0; g = 0; b = 0; a = 255
+        }
+    }
+
+    #Entity 2: Point with Color
+    Entity {
+        GeometryComponent {
+            type = Point
+            x = 0.0; y = 0.0
+        }
+        ColorComponent {
+            r = 255; g = 0; b = 255; a = 255
+        }
+    }
+
+    #Entity 3: Textured Entity with Transform and Color tint
+    Entity {
+        TextureComponent {
+            texture = aigisTexture
+        }
+        ColorComponent {
+            r = 255; g = 0; b = 0; a = 255
+        }
+        TransformComponent {
+            position = (100, 100)
+            scale    = (1, 1)
+            rotation = 0.0
+        }
+    }
+
+    #Entity 4: Dedicated Audio Emitter Entity
+    Entity {
+        MusicComponent {
+            music = bgmMusic
+        }
+        AudioPlaybackComponent {
+            state = Playing
+            loop  = false
+            playDirectly = true
+        }
+        AudioVolumeComponent {
+            volume = 100
+        }
+    }
+}

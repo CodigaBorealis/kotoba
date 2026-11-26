@@ -73,7 +73,7 @@ namespace Kotoba{
 
         void drawCommand(const Line& cmd, const DrawCommand& data){
 
-            ::DrawLine(cmd.start.x, cmd.start.y, cmd.end.x, cmd.end.y, data.tint);
+            ::DrawLineEx(cmd.start, cmd.end, cmd.thickness,data.tint);
         }
 
         void drawCommand(const Circle& cmd, const DrawCommand& data){
@@ -108,7 +108,7 @@ namespace Kotoba{
 
             }else{
 
-                ::DrawRectangle(data.position.x, data.position.y, cmd.dimensions.x, cmd.dimensions.y, data.tint);
+                ::DrawRectanglePro({data.position.x, data.position.y, static_cast<float>(cmd.dimensions.x), static_cast<float>(cmd.dimensions.y)}, data.origin, data.rotation, data.tint);
             }
         }
 
@@ -140,14 +140,18 @@ namespace Kotoba{
 
             if(!cmd) throw GraphicsException("Renderer expected a Texture pointer, got nullptr", ErrorCode::NullPointerException);
 
-            ::DrawTextureEx(cmd->native(), data.position, data.rotation, data.scale.x, data.tint);
+
+            ::Rectangle source{0,0, static_cast<float>(cmd->width()), static_cast<float>(cmd->height())};
+            ::Rectangle destination{data.position.x, data.position.y, cmd->width() * data.scale.x, cmd->height() * data.scale.y};
+
+            ::DrawTexturePro(cmd->native(), source, destination, data.origin, data.rotation, data.tint);
         }
 
         void drawCommand(const TextCommand cmd, const DrawCommand& data){
 
             if(!cmd.font) throw GraphicsException("Renderer expected a Font pointer, got nullptr", ErrorCode::NullPointerException);
 
-            ::DrawTextEx(cmd.font->native(), cmd.text.c_str(), data.position, cmd.fontSize, cmd.spacing, data.tint);
+            ::DrawTextPro(cmd.font->native(), cmd.text.c_str(), data.position, data.origin, data.rotation, cmd.fontSize, cmd.spacing, data.tint);
         }
     }
 

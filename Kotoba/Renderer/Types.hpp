@@ -23,14 +23,16 @@ namespace Kotoba{
 
         constexpr Line() = default;
 
-        constexpr Line(Vec2i start, Vec2i end)
+        constexpr Line(Vec2i start, Vec2i end, f32 thickness)
             :
             start(start),
-            end(end)
+            end(end),
+            thickness(thickness)
             {}
 
         Vec2i start{0, 0};
         Vec2i end{10, 10};
+        f32 thickness{1};
     };
 
     struct Circle{
@@ -115,13 +117,12 @@ namespace Kotoba{
     struct DrawCommand{
 
         Drawable drawable{};
-
         Vec2f position{0, 0};
         Vec2f scale{1, 1};
-        f32 rotation{0};
+        Vec2f origin{0, 0};
         Color tint{255, 255, 255, 255};
-        f32 outlineThickness{1};
         Color outlineColor{255, 0, 0, 255};
+        f32 rotation{0};
         bool outlineOnly{false};
     };
 }
