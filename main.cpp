@@ -1,15 +1,6 @@
-#include <iostream>
-#include "Kotoba/Audio/Types.hpp"
-#include "Kotoba/Components/AudioComponents.hpp"
-#include "Kotoba/Components/GraphicalComponents.hpp"
-#include "Kotoba/Core/Exception.hpp"
 #include "Kotoba/Core/Types.hpp"
-#include "Kotoba/Engine.hpp"
-#include "Kotoba/Renderer/SceneExtractor.hpp"
-#include "Kotoba/Renderer/Types.hpp"
-#include "Kotoba/ResourceManager/ResourceManager.hpp"
-#include "Kotoba/Scene/Scene.hpp"
-#include "Kotoba/Window/Window.hpp"
+#include "Kotoba/Kotoba.hpp"
+#include <iostream>
 
 int main(){
 
@@ -34,7 +25,7 @@ int main(){
         //something something
         Kotoba::Circle circle{100.0f};
         Kotoba::Color color{0,0,0,255};
-        Kotoba::TransformComponent transform{{100, 100}, {2, 0.3}, 50.f};
+        Kotoba::TransformComponent transform{{100, 100}, {1, 1}, 0.f};
         Kotoba::GeometryComponent rect{Kotoba::Rectangle{{1000,1000}}};
         Kotoba::AudioPlaybackComponent playback{Kotoba::PlaybackState::Playing, false, true};
         Kotoba::MusicComponent musicComp{musicID};
@@ -67,8 +58,12 @@ int main(){
         scene.add<Kotoba::ColorComponent>(entity5, color4);
         scene.add<Kotoba::TransformComponent>(entity5, transform);
 
+        Kotoba::Seconds time{1};
 
-        engine.run();
+        engine.run([&time, &engine](Kotoba::Seconds dt){
+
+            std::cout << "Application has been running for: " << engine.clock().unscaledElapsedTime() << "\n";
+        });
 
     }catch(Kotoba::Exception& e){
 

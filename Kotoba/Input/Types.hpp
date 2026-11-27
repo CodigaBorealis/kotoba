@@ -1,8 +1,8 @@
 #pragma once
 #include "Kotoba/Core/Types.hpp"
 #include "Kotoba/Math/Vec.hpp"
+#include <cstddef>
 #include <variant>
-#include <unordered_map>
 namespace Kotoba{
 
     namespace InputDevice{
@@ -147,30 +147,39 @@ namespace Kotoba{
 
         struct ButtonState{
 
-            Miliseconds heldDuration{0};
+            Seconds heldDuration{0};
             InputState state{InputState::Up};
             bool clicked{false};
         };
 
-        struct MouseState{
-
-            std::unordered_map<InputDevice::Mouse::Button, ButtonState> buttons;
-            Vec2i position{0, 0};
-            Vec2i delta{0, 0};    
-        };
-
-        struct KeyboardState{
-
-            std::unordered_map<InputDevice::Keyboard::Button, ButtonState> buttons{};
-
-        };
+        using InputSignal = std::variant<Mouse::Button, Keyboard::Button>;
 
         struct Event{
 
-            MouseState mouse{};
-            KeyboardState keyboard{};
+            InputDevice::InputSignal signal{};
+            InputDevice::ButtonState buttonState{};
+            Vec2i mousePosition{0, 0};
+            Vec2i mouseDelta{0, 0};
         };
 
-        using InputSignal = std::variant<Mouse::Button, Keyboard::Button>;
+        struct InputSignalHash{
+
+            std::size_t operator()(const InputDevice::InputSignal& sig){
+
+                return std::visit([](auto v) -> std::size_t{
+
+                using T = decltype(v);
+
+                const auto raw = static_cast<std::size_t>(v);
+
+                const std::size_t tag = std::is_same_v<T, InputDevice::Mouse::Button> ? 1 : 2;
+
+                return (raw * 1315423911u) ^ (tag + 0x9e3779b9u + (raw << 6) + (raw >> 2));
+
+            }, sig);
+
+            }
+        };
+
     };
 }

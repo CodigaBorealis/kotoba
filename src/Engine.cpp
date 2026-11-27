@@ -1,12 +1,14 @@
 #include "Kotoba/Engine.hpp"
-#include "Kotoba/Components/AudioComponents.hpp"
-#include "Kotoba/Core/Raylib.hpp"
+#include "Kotoba/Clock/Clock.hpp"
+#include "Kotoba/Components/Components.hpp"
 #include "Kotoba/Audio/AudioPlayer.hpp"
 #include "Kotoba/Renderer/Renderer.hpp"
 #include "Kotoba/Renderer/SceneExtractor.hpp"
 #include "Kotoba/Scene/Scene.hpp"
-namespace Kotoba{
+#include "Kotoba/ResourceManager/ResourceManager.hpp"
 
+namespace Kotoba{
+//Should order this better eventually
     struct Engine::Impl{
 
         explicit Impl(const EngineConfig& config)
@@ -22,6 +24,7 @@ namespace Kotoba{
         Renderer renderer;
         SceneExtractor extractor;
         AudioPlayer audio;
+        Clock clock;
 
         void render(){
 
@@ -58,15 +61,15 @@ namespace Kotoba{
 
     Engine::~Engine() = default;
 
-    void Engine::run(const std::function<void(f32 dt)>& updateCallback){
+    void Engine::run(const std::function<void(Seconds dt)>& updateCallback){
 
         while(!impl->window.shouldClose()){
 
-            f32 dt = ::GetFrameTime();
+            impl->clock.tick();
 
             impl->update();
 
-            if(updateCallback) updateCallback(dt);
+            if(updateCallback) updateCallback(impl->clock.deltaTime());
 
             impl->render();
             
@@ -91,6 +94,11 @@ namespace Kotoba{
     AudioPlayer& Engine::audio(){
 
         return impl->audio;
+    }
+
+    Clock& Engine::clock(){
+
+        return impl->clock;
     }
 
 }

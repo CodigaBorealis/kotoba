@@ -2,6 +2,7 @@
 #include "Kotoba/Core/Types.hpp"
 #include "Types.hpp"
 #include <unordered_map>
+#include <vector>
 
 namespace Kotoba{
 
@@ -22,20 +23,19 @@ namespace Kotoba{
         struct ButtonTracker{
 
             bool wasDown{false};
-            Miliseconds heldTime{0};
+            Seconds heldTime{0};
         };
 
         using MouseButton = InputDevice::Mouse::Button;
         using KeyboardButton = InputDevice::Keyboard::Button;
 
-        std::unordered_map<MouseButton, ButtonTracker> mouseTrackers{};
-        std::unordered_map<KeyboardButton, ButtonTracker> keyboardTrackers{};
+        std::vector<InputDevice::Event> frameEvents{};
 
         template<typename IsDownFunction>
 
         InputDevice::ButtonState updateButton(ButtonTracker& tracker, IsDownFunction isDown, f32 deltaTime){
 
-            constexpr Miliseconds CLICK_THRESHOLD{0.25};
+            constexpr Seconds CLICK_THRESHOLD{0.25};
 
             const bool down = isDown();
 
@@ -45,18 +45,18 @@ namespace Kotoba{
 
                 if(!tracker.wasDown){
 
-                    tracker.heldTime = Miliseconds{0};
+                    tracker.heldTime = Seconds{0};
 
                     result.state = InputDevice::InputState::Pressed;
 
                 }else{
 
-                    tracker.heldTime += Miliseconds{deltaTime};
+                    tracker.heldTime += Seconds{deltaTime};
 
                     result.state = InputDevice::InputState::Down;
                 }
 
-                result.heldDuration = Miliseconds{tracker.heldTime};
+                result.heldDuration = Seconds{tracker.heldTime};
                 result.clicked = false;
 
             }else{
@@ -65,16 +65,16 @@ namespace Kotoba{
 
                     result.state = InputDevice::InputState::Released;
 
-                    result.heldDuration = Miliseconds{tracker.heldTime};
+                    result.heldDuration = Seconds{tracker.heldTime};
 
                     result.clicked = tracker.heldTime <= CLICK_THRESHOLD;
 
-                    tracker.heldTime = Miliseconds{0};
+                    tracker.heldTime = Seconds{0};
 
                 }else{
 
                     result.state = InputDevice::InputState::Up;
-                    result.heldDuration = Miliseconds{0};
+                    result.heldDuration = Seconds{0};
                     result.clicked = false;
                 }
             }
@@ -83,6 +83,8 @@ namespace Kotoba{
 
         return result;
     }
-        InputDevice::Event currentEvent;
+        InputDevice::Event currentEvent{};
+        std::unordered_map<InputDevice::Mouse::Button, ButtonTracker> mouseTrackers{};
+        std::unordered_map<InputDevice::Keyboard::Button, ButtonTracker> keyboardTrackers{};
     };
 }

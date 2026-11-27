@@ -17,7 +17,7 @@ namespace Kotoba{
 
         EventDispatcher();
         ~EventDispatcher();
-        
+
         void bind(Condition condition, Action action);
 
         void submit(InputDevice::Event event);
@@ -34,118 +34,55 @@ namespace Kotoba{
 
     namespace InputConditions{
 
-            //KeyboardState Evaluators
-            inline EventDispatcher::Condition KeyPressed(InputDevice::Keyboard::Button key){
+        namespace Detail{
 
-                return [key](const InputDevice::Event& event){
+            inline const InputDevice::ButtonState* findButtonState(const InputDevice::Event& event, const InputDevice::InputSignal& signal){
 
-                    auto it = event.keyboard.buttons.find(key);
-                    return it != event.keyboard.buttons.end() && it->second.state == InputDevice::InputState::Pressed;
-                };
+                if(event.signal != signal) return nullptr;
+
+                return &event.buttonState;
             }
+        }
 
-            inline EventDispatcher::Condition KeyDown(InputDevice::Keyboard::Button key){
+        inline EventDispatcher::Condition SignalPressed(InputDevice::InputSignal signal){
 
-                return [key](const InputDevice::Event& event){
+        return [signal = std::move(signal)](const InputDevice::Event& event){
 
-                    auto it = event.keyboard.buttons.find(key);
+            const auto* state = Detail::findButtonState(event, signal);
 
-                    return it != event.keyboard.buttons.end() &&  (it->second.state == InputDevice::InputState::Pressed || it->second.state == InputDevice::InputState::Down);
-                };
-            }
+            return state && state->state == InputDevice::InputState::Pressed;
+        };
+    }
 
-            inline EventDispatcher::Condition KeyReleased(InputDevice::Keyboard::Button key){
+        inline EventDispatcher::Condition SignalDown(InputDevice::InputSignal signal){
 
-                return [key](const InputDevice::Event& event){
+            return [signal = std::move(signal)](const InputDevice::Event& event){
 
-                    auto it = event.keyboard.buttons.find(key);
+                const auto* state = Detail::findButtonState(event, signal);
 
-                    return it != event.keyboard.buttons.end() && it->second.state == InputDevice::InputState::Released;
-                };
-            }
+                return state && (state->state == InputDevice::InputState::Pressed || state->state == InputDevice::InputState::Down);
+            };
+        }
 
-            inline EventDispatcher::Condition KeyUp(InputDevice::Keyboard::Button key){
+        inline EventDispatcher::Condition SignalReleased(InputDevice::InputSignal signal){
 
-                return [key](const InputDevice::Event& event){
+            return [signal = std::move(signal)](const InputDevice::Event& event){
+                
+                const auto* state = Detail::findButtonState(event, signal);
+                
+                return state && state->state == InputDevice::InputState::Released;
+            };
+        }
 
-                    auto it = event.keyboard.buttons.find(key);
+        inline EventDispatcher::Condition SignalHeld(InputDevice::InputSignal signal, Seconds holdtime){
 
-                    return it != event.keyboard.buttons.end() &&  (it->second.state == InputDevice::InputState::Released || it->second.state == InputDevice::InputState::Up);                
-                };
-            }
+            return [signal = std::move(signal), holdtime](const InputDevice::Event& event){
 
-            //MouseState Evaluators
-            inline EventDispatcher::Condition MousePressed(InputDevice::Mouse::Button button){
+                const auto* state = Detail::findButtonState(event, signal);
 
-                return [button](const InputDevice::Event& event){
-
-                    auto it = event.mouse.buttons.find(button);
-                    return it != event.mouse.buttons.end() && it->second.state == InputDevice::InputState::Pressed;
-                };
-
-            }
-
-            inline EventDispatcher::Condition MouseDown(InputDevice::Mouse::Button button){
-
-                return [button](const InputDevice::Event& event){
-
-                    auto it = event.mouse.buttons.find(button);
-
-                    return it != event.mouse.buttons.end() &&  (it->second.state == InputDevice::InputState::Pressed || it->second.state == InputDevice::InputState::Down);
-                };
-
-            }
-
-            inline EventDispatcher::Condition MouseUp(InputDevice::Mouse::Button button){
-
-                return [button](const InputDevice::Event& event){
-
-                    auto it = event.mouse.buttons.find(button);
-                    return it != event.mouse.buttons.end() && it->second.state == InputDevice::InputState::Up;
-                };
-
-            }
-
-            inline EventDispatcher::Condition mouseReleased(InputDevice::Mouse::Button button){
-
-                return [button](const InputDevice::Event& event){
-
-                    auto it = event.mouse.buttons.find(button);
-
-                    return it != event.mouse.buttons.end() && it->second.state == InputDevice::InputState::Released;
-                };
-            }
-
-            inline EventDispatcher::Condition MouseClicked(InputDevice::Mouse::Button button){
-
-                return [button](const InputDevice::Event& event){
-
-                    auto it = event.mouse.buttons.find(button);
-
-                    return it != event.mouse.buttons.end() && it->second.clicked;
-                };
-            }
-
-            inline EventDispatcher::Condition MouseHeld(InputDevice::Mouse::Button button, Miliseconds holdtime){
-
-                return [button, holdtime](const InputDevice::Event& event){
-
-                    auto it = event.mouse.buttons.find(button);
-
-                    return it != event.mouse.buttons.end() && 
-                    (it->second.state == InputDevice::InputState::Pressed || it->second.state == InputDevice::InputState::Down) && 
-                    it->second.heldDuration >= holdtime;
-                };
-            }
-            
-            inline EventDispatcher::Condition MouseMoved(){
-
-                return [](const InputDevice::Event& event){
-
-                    return event.mouse.delta.x != 0 || event.mouse.delta.y != 0;
-                };
-            }
-
+                return state && (state->state == InputDevice::InputState::Pressed || state->state == InputDevice::InputState::Down) && state->heldDuration >= holdtime;
+            };
+        }
             //Logical Combinators
             inline EventDispatcher::Condition And(EventDispatcher::Condition c1, EventDispatcher::Condition c2){
 

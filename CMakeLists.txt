@@ -27,6 +27,7 @@ add_executable(Kotoba
     src/AudioPlayer.cpp
     src/ResourceManager.cpp
     src/Engine.cpp
+    src/Clock.cpp
     main.cpp
 )
 

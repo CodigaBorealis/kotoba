@@ -1,6 +1,8 @@
 #include "Kotoba/Input/Input.hpp"
 #include "Kotoba/Core/Types.hpp"
 #include "Kotoba/Core/Raylib.hpp"
+#include "Kotoba/Input/Types.hpp"
+#include <raylib.h>
 namespace Kotoba{
     
     // Compile-time arrays of all supported buttons for iteration
@@ -263,42 +265,46 @@ namespace Kotoba{
 
     void Input::Update(){
 
-        InputDevice::Event nextEvent{};
+        frameEvents.clear();
 
         const f32 deltaTime = ::GetFrameTime();
 
-        Vector2 mousePos = ::GetMousePosition();
-        Vector2 mouseDelta = ::GetMouseDelta();
-        nextEvent.mouse.position = {static_cast<i32>(mousePos.x), static_cast<i32>(mousePos.y)};
-        nextEvent.mouse.delta = {static_cast<i32>(mouseDelta.x), static_cast<i32>(mouseDelta.y)};
+        const Vector2 mousePos = ::GetMousePosition();
+        const Vector2 mouseDelta = ::GetMouseDelta();
+
+        const Vec2i pos{static_cast<i32>(mousePos.x), static_cast<i32>(mousePos.y)};
+        const Vec2i delta{static_cast<i32>(mouseDelta.x), static_cast<i32>(mouseDelta.y)};
 
         for(auto btn : MOUSE_BUTTONS){
 
             auto& tracker = mouseTrackers[btn];
 
-            auto buttonState = updateButton(tracker, [btn](){
+            const auto buttonState = updateButton(tracker, [btn](){
 
-                    return ::IsMouseButtonDown(toRaylib(btn));
+                return ::IsMouseButtonDown(toRaylib(btn));
 
-                },deltaTime);
+            }, deltaTime);
 
-            nextEvent.mouse.buttons[btn] = buttonState;
+            if(buttonState.state != InputDevice::InputState::Up || buttonState.clicked){
+
+                frameEvents.emplace_back(InputDevice::Event{InputDevice::InputSignal{btn}, buttonState, pos, delta});
+            }
         }
 
         for(auto key : KEYBOARD_BUTTONS){
 
             auto& tracker = keyboardTrackers[key];
 
-            auto buttonState = updateButton(tracker,[key](){
+            const auto buttonState = updateButton(tracker, [key](){
 
                 return ::IsKeyDown(toRaylib(key));
-                
             }, deltaTime);
 
-            nextEvent.keyboard.buttons[key] = buttonState;
-        }
+            if(buttonState.state != InputDevice::InputState::Up || buttonState.clicked){
 
-        currentEvent = nextEvent;
+                frameEvents.emplace_back(InputDevice::Event{key, buttonState, pos, delta});
+            }
+        }
     }
 
     const InputDevice::Event& Input::getEvent(){
