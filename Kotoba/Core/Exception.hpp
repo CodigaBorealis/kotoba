@@ -94,4 +94,11 @@ namespace Kotoba{
 
         using Exception::Exception;
     };
+
+    class TimeException : public Exception{
+
+        public:
+
+        using Exception::Exception;
+    };
 }

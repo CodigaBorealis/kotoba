@@ -1,23 +1,21 @@
 #pragma once
 #include "Kotoba/Input/Types.hpp"
+#include <vector>
 
 namespace Kotoba{
 
     /*
-    *Represents a component that can listen for the state of the keyboard
+    *Represents a component that can react to a given set of inputs
     */
 
-    struct KeyboardListener{
+    struct InputListener{
 
-        InputDevice::KeyboardState state{};
-    };
+        std::vector<InputDevice::InputSignal> watchedSignals{};
+        std::vector<InputDevice::Event> eventQueue{};
 
-    /*
-    *Represents a component that can listen for the state of the keyboard
-    */
+        void emit(const InputDevice::Event& event){
 
-    struct MouseListener{
-
-        InputDevice::MouseState state{};
+            eventQueue.push_back(event);
+        }
     };
 }

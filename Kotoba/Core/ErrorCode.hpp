@@ -29,6 +29,8 @@ namespace Kotoba{
         SceneInvalidEntity,
         SceneComponentAlreadyExists,
         SceneComponentCreationFailed,
+        //Value errors
+        InvalidArgument = 5000,
         //nullptr
         NullPointerException = std::numeric_limits<u32>::max()
         

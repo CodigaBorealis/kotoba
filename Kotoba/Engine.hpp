@@ -1,11 +1,15 @@
 #pragma once
-#include "Window/Window.hpp"
-#include "ResourceManager/ResourceManager.hpp"
-#include "Audio/AudioPlayer.hpp"
-#include "Scene/Scene.hpp"
 #include <functional>
 #include <memory>
+#include "Kotoba/Window/Window.hpp"
+#include "Kotoba/Core/Types.hpp"
+
 namespace Kotoba{
+
+    class ResourceManager;
+    class Scene;
+    class AudioPlayer;
+    class Clock;
     
     struct EngineConfig{
 
@@ -24,12 +28,13 @@ namespace Kotoba{
         Engine(Engine&&) = delete;
         Engine& operator=(Engine&&) = delete;
         //Lifecycle function
-        void run(const std::function<void(f32 dt)>& updateCallback = {});
+        void run(const std::function<void(Seconds dt)>& updateCallback = {});
 
         Window& window();
         ResourceManager& resources();
         Scene& scene();
         AudioPlayer& audio();
+        Clock& clock();
 
         private:
 

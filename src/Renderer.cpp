@@ -108,7 +108,7 @@ namespace Kotoba{
 
             }else{
 
-                ::DrawRectanglePro({data.position.x, data.position.y, static_cast<float>(cmd.dimensions.x), static_cast<float>(cmd.dimensions.y)}, data.origin, data.rotation, data.tint);
+                ::DrawRectanglePro({data.position.x, data.position.y, static_cast<f32>(cmd.dimensions.x), static_cast<f32>(cmd.dimensions.y)}, data.origin, data.rotation, data.tint);
             }
         }
 
@@ -141,7 +141,7 @@ namespace Kotoba{
             if(!cmd) throw GraphicsException("Renderer expected a Texture pointer, got nullptr", ErrorCode::NullPointerException);
 
 
-            ::Rectangle source{0,0, static_cast<float>(cmd->width()), static_cast<float>(cmd->height())};
+            ::Rectangle source{0,0, static_cast<f32>(cmd->width()), static_cast<f32>(cmd->height())};
             ::Rectangle destination{data.position.x, data.position.y, cmd->width() * data.scale.x, cmd->height() * data.scale.y};
 
             ::DrawTexturePro(cmd->native(), source, destination, data.origin, data.rotation, data.tint);

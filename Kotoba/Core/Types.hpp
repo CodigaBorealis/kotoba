@@ -44,7 +44,7 @@ namespace Kotoba{
         u8 a{255};
     };
     //Time
-    using Miliseconds = std::chrono::duration<float>;
+    using Seconds = std::chrono::duration<f32>;
     //Resources
     using ResourceID = u64;
 }
