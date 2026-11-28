@@ -8,7 +8,7 @@ namespace Kotoba{
     *Represents a component that can react to a given set of inputs
     */
 
-    struct InputListener{
+    struct InputComponent{
 
         std::vector<InputDevice::InputSignal> watchedSignals{};
         std::vector<InputDevice::Event> eventQueue{};
@@ -18,4 +18,7 @@ namespace Kotoba{
             eventQueue.push_back(event);
         }
     };
+
+    template<> inline constexpr bool IsComponent<InputComponent> = true;
+
 }

@@ -8,3 +8,5 @@
 #include "Clock/Clock.hpp"
 #include "Utils/Utils.hpp"
 #include "Window/Window.hpp"
+#include "Input/Input.hpp"
+#include "Input/EventDispatcher.hpp"

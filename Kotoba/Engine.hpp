@@ -9,6 +9,7 @@ namespace Kotoba{
     class ResourceManager;
     class Scene;
     class AudioPlayer;
+    class EventDispatcher;
     class Clock;
     
     struct EngineConfig{
@@ -35,7 +36,8 @@ namespace Kotoba{
         Scene& scene();
         AudioPlayer& audio();
         Clock& clock();
-
+        EventDispatcher& dispatcher();
+        
         private:
 
         struct Impl;
