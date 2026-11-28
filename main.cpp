@@ -10,7 +10,6 @@ int main(){
 
         Kotoba::Engine engine{};
 
-        engine.window().addFlags(Kotoba::Window::Flag::Resizable | Kotoba::Window::Flag::Fullscreen);
         auto& resourceManager = engine.resources();
         
         auto& scene = engine.scene();
@@ -43,7 +42,7 @@ int main(){
 
         Kotoba::InputComponent input{.watchedSignals = {
 
-            Kotoba::InputDevice::Keyboard::Button::Backspace,
+            Kotoba::InputDevice::Keyboard::Button::Space,
             Kotoba::InputDevice::Mouse::Button::Left
         }};
 
@@ -75,7 +74,8 @@ int main(){
         });
 
         engine.dispatcher().bind(
-        Kotoba::InputConditions::SignalPressed(Kotoba::InputDevice::Mouse::Button::Left),
+        Kotoba::InputConditions::SignalPressed(Kotoba::InputDevice::Mouse::Button::Left
+        ),
         [](){
             std::cout << "Left mouse clicked!\n";
         });

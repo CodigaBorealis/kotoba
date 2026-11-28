@@ -10,7 +10,6 @@
 #include "Kotoba/Scene/Scene.hpp"
 #include "Kotoba/ResourceManager/ResourceManager.hpp"
 #include "Kotoba/Input/Input.hpp"
-#include <variant>
 #include <vector>
 namespace Kotoba{
 //Should order this better eventually
@@ -141,7 +140,7 @@ namespace Kotoba{
             if(updateCallback) updateCallback(impl->clock.deltaTime());
 
             impl->render();
-            
+
             impl->pollInputAndDispatch();
         }
     }

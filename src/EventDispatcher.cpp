@@ -1,4 +1,5 @@
 #include "Kotoba/Input/EventDispatcher.hpp"
+#include "Kotoba/Input/Types.hpp"
 #include <vector>
 
 namespace Kotoba{
@@ -12,8 +13,8 @@ namespace Kotoba{
         };
 
         std::vector<Binding> bindings{};
-        InputDevice::Event currentEvent{};
-        bool hasEvent{false};
+        std::vector<InputDevice::Event> queue{};    
+
     };
 
     EventDispatcher::EventDispatcher()
@@ -30,30 +31,35 @@ namespace Kotoba{
 
     void EventDispatcher::submit(InputDevice::Event event){
 
-        impl->currentEvent = std::move(event);
-        impl->hasEvent = true;
-        
+        impl->queue.push_back(std::move(event));    
     }   
 
     void EventDispatcher::submitBatch(std::vector<InputDevice::Event> events){
 
-        impl->currentEvent = std::move(events).back();
-        impl->hasEvent = true;
+        if(events.empty()) return;
+
+        impl->queue.insert(impl->queue.end(), std::make_move_iterator(events.begin()), std::make_move_iterator(events.end()));
+
     }
 
     void EventDispatcher::dispatch(){
 
-        if(!impl->hasEvent) return;
+        std::vector<InputDevice::Event> events{};
 
-        for(const auto& binding : impl->bindings){
+        events.swap(impl->queue);
 
-            if(binding.condition(impl->currentEvent)){
+        for(const auto& event : events){
 
-                binding.action();
+            for(const auto& binding : impl->bindings){
+
+                if(binding.condition && binding.condition(event)){
+
+                    if(!binding.action) return;
+
+                    binding.action();
+                }
             }
         }
-
-        impl->hasEvent = false;
     }
 
 }
