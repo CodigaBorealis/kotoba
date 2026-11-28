@@ -164,7 +164,7 @@ namespace Kotoba{
 
         struct InputSignalHash{
 
-            std::size_t operator()(const InputDevice::InputSignal& sig){
+            std::size_t operator()(const InputDevice::InputSignal& sig) const noexcept{
 
                 return std::visit([](auto v) -> std::size_t{
 

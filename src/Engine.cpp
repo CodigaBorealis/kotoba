@@ -2,11 +2,15 @@
 #include "Kotoba/Clock/Clock.hpp"
 #include "Kotoba/Components/Components.hpp"
 #include "Kotoba/Audio/AudioPlayer.hpp"
+#include "Kotoba/Input/EventDispatcher.hpp"
+#include "Kotoba/Input/Input.hpp"
+#include "Kotoba/Input/Types.hpp"
 #include "Kotoba/Renderer/Renderer.hpp"
 #include "Kotoba/Renderer/SceneExtractor.hpp"
 #include "Kotoba/Scene/Scene.hpp"
 #include "Kotoba/ResourceManager/ResourceManager.hpp"
-
+#include "Kotoba/Input/Input.hpp"
+#include <vector>
 namespace Kotoba{
 //Should order this better eventually
     struct Engine::Impl{
@@ -24,6 +28,8 @@ namespace Kotoba{
         Renderer renderer;
         SceneExtractor extractor;
         AudioPlayer audio;
+        Input input;
+        EventDispatcher events;
         Clock clock;
 
         void render(){
@@ -52,6 +58,68 @@ namespace Kotoba{
                 }
             });
         }
+
+        void pollInputAndDispatch(){
+
+            input.update();
+
+            std::vector<InputDevice::Event> frameEvents{};
+            
+            const auto& currentState = input.getEvent();
+
+            activeScene.forEachEntity([&](Scene::Entity entity) {
+                
+                auto* comp = activeScene.get<InputComponent>(entity);
+
+                if(!comp) return;
+
+                if(!comp->eventQueue.empty()){
+
+                    frameEvents.insert(frameEvents.end(), std::make_move_iterator(comp->eventQueue.begin()), std::make_move_iterator(comp->eventQueue.end()));
+
+                    comp->eventQueue.clear();
+                }
+                
+                for(const auto& signal : comp->watchedSignals){
+
+                    InputDevice::ButtonState buttonState{};
+
+                    if(input.isPressed(signal)){
+
+                        buttonState.state = InputDevice::InputState::Pressed;
+
+                    }else if(input.isReleased(signal)){
+
+                        buttonState.state = InputDevice::InputState::Released;
+
+                    }else if(input.isDown(signal)){
+
+                        buttonState.state = InputDevice::InputState::Down;
+
+                    }else{
+
+                        buttonState.state = InputDevice::InputState::Up;
+                    }
+
+                    if(currentState.signal == signal){
+
+                        buttonState.heldDuration = currentState.buttonState.heldDuration;
+                        buttonState.clicked = currentState.buttonState.clicked;
+                    }
+
+                    InputDevice::Event event{};
+                    event.signal = signal;
+                    event.buttonState = buttonState;
+                    event.mousePosition = currentState.mousePosition;
+                    event.mouseDelta = currentState.mouseDelta;
+
+                    frameEvents.push_back(std::move(event));
+                }
+            });
+
+            events.submitBatch(std::move(frameEvents));
+            events.dispatch();
+        }
     };
 
     Engine::Engine(const EngineConfig& config)
@@ -72,7 +140,8 @@ namespace Kotoba{
             if(updateCallback) updateCallback(impl->clock.deltaTime());
 
             impl->render();
-            
+
+            impl->pollInputAndDispatch();
         }
     }
 
@@ -101,4 +170,8 @@ namespace Kotoba{
         return impl->clock;
     }
 
-}
+    EventDispatcher& Engine::dispatcher(){
+
+        return impl->events;
+    }
+}   

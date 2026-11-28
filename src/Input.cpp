@@ -263,7 +263,7 @@ namespace Kotoba{
         return KEY_NULL;
     }
 
-    void Input::Update(){
+    void Input::update(){
 
         frameEvents.clear();
 

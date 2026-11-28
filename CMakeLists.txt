@@ -28,6 +28,7 @@ add_executable(Kotoba
     src/ResourceManager.cpp
     src/Engine.cpp
     src/Clock.cpp
+    src/EventDispatcher.cpp
     main.cpp
 )
 

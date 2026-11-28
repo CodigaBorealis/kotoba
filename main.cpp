@@ -1,4 +1,6 @@
+#include "Kotoba/Components/InputComponents.hpp"
 #include "Kotoba/Core/Types.hpp"
+#include "Kotoba/Input/EventDispatcher.hpp"
 #include "Kotoba/Kotoba.hpp"
 #include <iostream>
 
@@ -8,7 +10,6 @@ int main(){
 
         Kotoba::Engine engine{};
 
-        engine.window().addFlags(Kotoba::Window::Flag::Resizable | Kotoba::Window::Flag::Fullscreen);
         auto& resourceManager = engine.resources();
         
         auto& scene = engine.scene();
@@ -39,6 +40,12 @@ int main(){
         Kotoba::TextComponent text{"hello", 24, 1, fontID};
         Kotoba::Color color4{0,0,0, 255};
 
+        Kotoba::InputComponent input{.watchedSignals = {
+
+            Kotoba::InputDevice::Keyboard::Button::Space,
+            Kotoba::InputDevice::Mouse::Button::Left
+        }};
+
         scene.add<Kotoba::GeometryComponent>(entity, circle);
         scene.add<Kotoba::ColorComponent>(entity, color);
 
@@ -57,13 +64,23 @@ int main(){
         scene.add<Kotoba::TextComponent>(entity5, text);
         scene.add<Kotoba::ColorComponent>(entity5, color4);
         scene.add<Kotoba::TransformComponent>(entity5, transform);
+        scene.add<Kotoba::InputComponent>(entity5, input);
 
-        Kotoba::Seconds time{1};
+        engine.dispatcher().bind(
+        Kotoba::InputConditions::SignalPressed(Kotoba::InputDevice::Keyboard::Button::Space),
+        [](){
 
-        engine.run([&time, &engine](Kotoba::Seconds dt){
-
-            std::cout << "Application has been running for: " << engine.clock().unscaledElapsedTime() << "\n";
+            std::cout << "SPACE HAS BEEN PRESSED!\n";
         });
+
+        engine.dispatcher().bind(
+        Kotoba::InputConditions::SignalPressed(Kotoba::InputDevice::Mouse::Button::Left
+        ),
+        [](){
+            std::cout << "Left mouse clicked!\n";
+        });
+
+        engine.run();
 
     }catch(Kotoba::Exception& e){
 

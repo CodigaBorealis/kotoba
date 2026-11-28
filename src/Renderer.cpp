@@ -42,7 +42,7 @@ namespace Kotoba{
         {
             Vec2u size = window.getSize();
             impl->baseResolution = {static_cast<f32>(size.x), static_cast<f32>(size.y)};
-            impl->canvas = ::LoadRenderTexture(static_cast<int>(size.x), static_cast<int>(size.y));
+            impl->canvas = ::LoadRenderTexture(static_cast<i32>(size.x), static_cast<i32>(size.y));
         }
 
     void Renderer::submit(DrawCommand command){
