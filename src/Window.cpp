@@ -14,8 +14,8 @@ namespace Kotoba{
         bool requestedClose{false};
         u32 targetFPS{};
         Flag flags{Flag::None};
-
-        static unsigned int toRaylibFlags(Window::Flag flags) {
+        //Reasonable since raylib does use int
+        static unsigned int toRaylibFlags(Window::Flag flags){
 
             unsigned int result = 0;
 
@@ -183,7 +183,7 @@ namespace Kotoba{
         
         if(!IsWindowReady()) throw InitializationException("Window has not been initialized", ErrorCode::WindowNotInitialized);
 
-        ::SetWindowSize(static_cast<int>(dimensions.x), static_cast<int>(dimensions.y));
+        ::SetWindowSize(static_cast<i32>(dimensions.x), static_cast<i32>(dimensions.y));
     }
 
     Vec2u Window::getSize() const{
@@ -223,7 +223,7 @@ namespace Kotoba{
 
         impl->targetFPS = fps;
 
-        ::SetTargetFPS(static_cast<int>(impl->targetFPS));
+        ::SetTargetFPS(static_cast<i32>(impl->targetFPS));
     }
 
     u32 Window::getTargetFPS() const{
@@ -269,7 +269,7 @@ namespace Kotoba{
 
         if(!IsWindowReady()) throw InitializationException("Window has not been initialized", ErrorCode::WindowNotInitialized);
 
-        ::SetWindowPosition(static_cast<int>(position.x), static_cast<int>(position.y));
+        ::SetWindowPosition(static_cast<i32>(position.x), static_cast<i32>(position.y));
     }
 
     Vec2i Window::getPosition() const{
